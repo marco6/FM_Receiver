@@ -1,6 +1,5 @@
 
-Installazione:
-==============
+# Installazione:
 
 Prima di tutto serve un client GIT se no diventiamo cretini con la 
 linea di comando.
@@ -15,13 +14,13 @@ linea di comando.
 	- Se qualcuno usa ubuntu è meglio che scarichi il "deb package"
 	  che è compatibile.
 
-Per fare sta roba serve:
+## Per fare sta roba serve:
 
 - GHDL (sudo apt-get install ghdl)
 - gtkwave (sudo apt-get install gtkwave)
 - make (se avete gcc dovrebbe essere già installato)
 
-Per usarli su windows invece dovete installare:
+## Per usarli su Windows invece dovete installare:
 
 - GHDL ( http://sourceforge.net/projects/ghdl-updates/ )
 - gtkwave ( http://gtkwave.sourceforge.net/ )
@@ -32,52 +31,49 @@ Per usarli su windows invece dovete installare:
 Dovete anche aggiungere tutte le cartelle con gli eseguibili al PATH
 (vedi http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7 )
 
-Divisione dei compiti:
-======================
+# Divisione dei compiti:
 
-Marco:
-------------------------
+## Marco:
+
 - NCO:
 	- Controller
 	- (Tuner Control ?)
 
-Ienny:
-------
+## Ienny:
+
 - Low pass filter (auguri)
 
-Carlo:
-------
+##Carlo:
+
 - Amp (con clipping)
 - PLL (collegamenti)
 - Configurazione(Probabile visto che dobbiamo provare più cose)
 
-SID:
-----
+## SID:
+
 - Phase detector (vaccata)
 - Cosine Rom (non vaccata)
 
-Nick:
------
+## Nick:
+
 - Loop filter (auguri anche a te)
 
-Manca ancora:
--------------
+# Manca ancora:
+
 - Input per la simulazione (questo ognuno prova a farsi il suo poi vediamo)
 	- per favore usate lo stesso formato: un valore per riga, tutto 
 	  scritto in decimale.. Se no anche quì diventiamo scemi.
 - l'XADC (Questo chiediamo aiuto al prof.)
-- Preamp (confermato, se Carlo mi da il via libera lo tolgo da questa lista)
 - Output (alla fine, se davvero lo mettiamo sulla scheda)
 
-Piazzate qua sotto i file/link di documentazione
--------------------------------------------
+# Piazzate qua sotto i file/link di documentazione
 
 - PDF tesi indiano: http://read.pudn.com/downloads166/ebook/757199/full%20digital%20FM%20receiver.pdf 
 - Clipping (per l'amplificatore radio): http://en.wikipedia.org/wiki/Clipping_%28audio%29 
 - Introduzione facile a git, per non sbagliare: http://rogerdudler.github.io/git-guide/index.it.html
 
-Note sul codice:
-----------------
+# Note sul codice:
+
 Ragazzi piazzo quì qualche regoletta/consiglio per non smadonnare come 
 mi è successo a tirocinio!
 
