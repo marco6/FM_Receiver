@@ -2,4 +2,35 @@ Per fare sta roba serve:
 - GHDL (sudo apt-get install ghdl)
 - gtkwave (sudo apt-get install gtkwave)
 
-Passatemi poi l'email per invitarvi
+Passatemi poi l'email per invitarvi (manca solo Nick)
+
+Per le parti, le scrivo quì:
+
+== Marco(Con aiuto di SID): ==
+NCO
+
+
+== Ienny: ==
+Low pass filter
+
+== Carlo: ==
+?Amp?
+PLL
+Configurazione(FORSE)
+
+== SID: ==
+Phase detector
+
+
+== Nick: ==
+Loop filter
+
+Manca ancora:
+- Input per la simulazione
+- l'XADC
+- Preamp ?
+- Output ?
+
+Comunque chiediamo anche al prof.
+
+= Piazzate qua sotto i file di documentazione =
