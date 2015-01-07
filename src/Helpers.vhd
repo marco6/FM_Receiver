@@ -3,6 +3,10 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
+-- Ragazzi parliamo come mangiamo: italiano!
+-- Questo package è il ricettacolo di tutte le cose utili ma che 
+-- possono essere riutilizzate, ok?
+-- La roba che ho scritto in inglese non la riscrivo... 
 package Helpers is
 	-- Arithmetic right shift - I don't know why this isn't in the 
 	-- standard lyibrary yet!
