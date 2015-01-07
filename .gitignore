@@ -37,4 +37,4 @@ waves/*
 !/*/
 !Makefile
 !.gitignore
-!README
+!README.md
