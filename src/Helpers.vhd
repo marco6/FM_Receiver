@@ -13,9 +13,25 @@ package Helpers is
 	-- As input this function takes a signed number (other data type
 	-- wouldn't really need SAR function) and a strictly positive count.
 	function SAR (LEFT: SIGNED; COUNT: POSITIVE ) return SIGNED;
+
+	-- Questa funzione restituisce un numero senza segno con ampiezza N,
+	-- tenendo conto del segno durante la conversione.
+	function TO_UNSIGNED_RESIZE(L: SIGNED; N : POSITIVE) return UNSIGNED;
+
 end Helpers;
 
 package body Helpers is
+
+	function TO_UNSIGNED_RESIZE(L: SIGNED; N : POSITIVE) 
+		return UNSIGNED is
+		variable RET : UNSIGNED (N-1 downto 0);
+	begin
+		-- Sanity check
+		assert N > L'length;
+		RET(N-1 downto L'length) := (others => L(L'left));
+		RET(L'left downto 0) := UNSIGNED(L);
+		return RET;
+	end TO_UNSIGNED_RESIZE;
 
 	function SAR (LEFT: SIGNED; COUNT: POSITIVE) return SIGNED is
 		variable RES : SIGNED(LEFT'LENGTH -1 downto 0);

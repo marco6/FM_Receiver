@@ -31,6 +31,40 @@ linea di comando.
 Dovete anche aggiungere tutte le cartelle con gli eseguibili al PATH
 (vedi http://stackoverflow.com/questions/6318156/adding-python-path-on-windows-7 )
 
+# Utilizzo
+
+La struttura del progetto ha tre cartelle principali e una sottocartella.
+
+Le tre cartelle principali sono:
+
+- build (tutto minuscolo): serve a ghdl per piazzarci i file intermedi e
+  in generale ciò che gli serve per compilare. Viene ignorata da git
+- waves: serve a contenere i risultati delle simulazioni. Viene ignorata
+  da git.
+- src: questa cartella contiene il codice e una sotto cartella. Nella
+  cartella principale vanno messi i file sorgenti contenenti entità e
+  architetture + funzioni package o quello che volete.
+	- src/test: questa invece serve per i test. _TUTTI_ i test vanno messi
+	  quì dentro, compresi i file di input!
+
+Se questa organizzazione viene seguita, i makefile funzioneranno. Se no no.
+
+Ci sono praticamente solo due comandi che potete fare con i makefile che ho scritto, li elenco:
+
+- _make_ : semplicemente costruisce tutta la libreria (test esclusi)
+- _make run/nomeTest_ : (dove _nomeTest_ è il nome di uno dei file della
+  cartella src/test senza l'estensione) fa partire uno dei test e una 
+  volta finito (se non ci sono stati errori) apre le forme d'onda del 
+  risultato.
+
+Un esempio tipico di utilizzo sarebbe (dopo la modifica ad esempio degli
+Helpers):
+
+	make
+	make run/Helpers_test
+	
+	
+
 # Divisione dei compiti:
 
 ## Marco:
@@ -68,6 +102,7 @@ Dovete anche aggiungere tutte le cartelle con gli eseguibili al PATH
 
 # Piazzate qua sotto i file/link di documentazione
 
+- Manuale di VHDL: http://www.csee.umbc.edu/portal/help/VHDL/summary.html
 - PDF tesi indiano: http://read.pudn.com/downloads166/ebook/757199/full%20digital%20FM%20receiver.pdf 
 - Clipping (per l'amplificatore radio): http://en.wikipedia.org/wiki/Clipping_%28audio%29 
 - Introduzione facile a git, per non sbagliare: http://rogerdudler.github.io/git-guide/index.it.html
@@ -77,7 +112,7 @@ Dovete anche aggiungere tutte le cartelle con gli eseguibili al PATH
 Ragazzi piazzo quì qualche regoletta/consiglio per non smadonnare come 
 mi è successo a tirocinio!
 
-- Commenti
+- Commenti. TANTI TANTI COMMENTI!
 - Possibilmente fate le cose parametriche (ovvero niente costanti 
 	magiche ma usate pesantemente i generici)
 - Nomi delle variabili/segnali comprensibili a umani

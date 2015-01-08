@@ -3,6 +3,7 @@ library IEEE;
 use IEEE.std_logic_1164.all;
 use IEEE.numeric_std.all;
 
+use WORK.Helpers.all;
 
 -- Questo è l'NCO completo che si vede da fuori.
 -- Descrivo di lato i vari input.
@@ -84,7 +85,7 @@ architecture Indian_Beh of NCO is
 	end component;
 	
 	-- Than a counter to take track of the last angle computed
-	signal COUNTER : unsigned(N-1 downto 0);
+	signal COUNTER : unsigned(N-1 downto 0) := (others => '0');
 begin
 
 	-- I first instantiate the cos_rom
@@ -107,10 +108,7 @@ counter_driver:
 		elsif(rising_edge(CLK)) then
 			-- in questo caso quindi mi basta sommare.
 			COUNTER <= COUNTER + STEP + 
-				unsigned(E_IN); -- quì posso trasformare in scioltezza
-								-- in unsigned perchè tanto il complemento
-								-- a 2 funziona lo stesso quando si usano
-								-- operandi con lo stesso numero di bit!
+				unsigned(E_IN); 
 		end if;
 		-- and that's all folks (carrot time needed!).
 	end process;
@@ -119,5 +117,57 @@ end architecture;
 -- Lo so che "UnitCare" sembra na cosa da ospedale... 
 -- Ma se avete un'idea migliore sono aperto a proposte!
 architecture UnitCare_Beh of NCO is
+	-- questa serve sempre
+	component cos_rom is
+		generic ( N, M : positive := 12 );
+		port (
+			CLK : in std_logic;
+			IDX : in unsigned( N-1 downto 0);
+			C_OUT : out signed ( M-1 downto 0)
+		);
+	end component;
+	
+	-- Questa pure però per il trucchetto che utilizzo per far 
+	-- quadrare i conti, serve un counter più grande
+	signal COUNTER : unsigned(N+1 downto 0);
 begin
+	-- Il problema principale quì è quindi che STEP è definito in
+	-- parti di angolo: 1 STEP = 2PI/2^N, mentre E_IN è definito in 
+	-- radianti ( anche se moltiplicati per 2^(N-1) ).
+	-- 
+	-- il trucco quì consiste nel percorrere la cos_rom PI volte più 
+	-- velocemente, mentre invece E_IN sarà aggiunto senza questo fattore
+	-- moltiplicativo.
+	-- Questo però incrementa la frequenza minima di PI volte e quindi
+	-- per tamponare questo effetto, si prende un addressing space
+	-- maggiore (2 bit in più). In questo modo la frequenza minima 
+	-- diminuisce addirittura di un fattore di 4/PI. Non di tanto quindi.
+c_gen: cos_rom
+	generic map(
+		N => (N+2), -- come dicevo prima, due bit aggiuntivi!
+		M => M) -- qui invece tutto uguale!
+	port map(CLK => CLK,
+		IDX => COUNTER,
+		C_OUT => C_OUT
+	); -- le porte invece non cambiano
+	
+	-- la struttura è simile
+counter_driver:
+	process(CLK, RST)
+	begin
+		-- quì c'è sempre un reset asincrono
+		if (RST = '1') then
+			COUNTER <= (others => '0');
+		elsif(rising_edge(CLK)) then
+			-- quì però cambia qualcosina:
+			COUNTER <= COUNTER 
+				-- come approssimazione per PI uso 3.125 = 3 + 1/8
+				-- sperando vada bene
+				+ STEP + STEP & '0' -- questa riga equivale a STEP * 3
+				+ STEP(STEP'left downto 3) -- questo equivale a * 1/8
+				+ TO_UNSIGNED_RESIZE(E_IN, N+2); 
+				-- E questo invece lo trasformo in N+2 bit, tenendo conto
+				-- del segno!
+		end if;
+	end process;
 end architecture;
