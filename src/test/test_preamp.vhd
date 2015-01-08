@@ -1,21 +1,3 @@
---------------------------------------------------------------------------------
--- Company: <Name>
---
--- File: test_preamp.vhd
--- File history:
---      <Revision number>: <Date>: <Comments>
---      <Revision number>: <Date>: <Comments>
---      <Revision number>: <Date>: <Comments>
---
--- Description: 
---
--- <Description here>
---
--- Targeted device: <Family::SmartFusion2> <Die::M2S010T> <Package::484 FBGA>
--- Author: <Name>
---
---------------------------------------------------------------------------------
-
 library IEEE;
 
 use IEEE.std_logic_1164.all;
@@ -27,11 +9,12 @@ entity test_preamp is
 		N : positive := 7   --per usare il file di testo ipotizzo campioni da 8 bit
 	);
 end test_preamp;
+
 architecture behavior of test_preamp is
    --la simulazione è un po piu incasinata, ma a parte le port map iniziali non ho nemmeno messo il reset tanto
     --dovrebbe partire immediatamente, prende un valore dal file ogni 4 periodi di clock e fa il suo sporco lavoro
 
-file vectors: text open read_mode is "fm.txt.txt";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
+file vectors: text open read_mode is "test_preamp.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
 COMPONENT preamp
 PORT( clk : in std_logic;
     input : in std_logic_vector(N downto 0);

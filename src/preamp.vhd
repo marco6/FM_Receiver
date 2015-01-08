@@ -1,21 +1,3 @@
---------------------------------------------------------------------------------
--- Company: <Name>
---
--- File: preamp.vhd
--- File history:
---      <Revision number>: <Date>: <Comments>
---      <Revision number>: <Date>: <Comments>
---      <Revision number>: <Date>: <Comments>
---
--- Description: 
---
--- <Description here>
---
--- Targeted device: <Family::SmartFusion2> <Die::M2S010T> <Package::484 FBGA>
--- Author: <Name>
---
---------------------------------------------------------------------------------
-
 library IEEE;
 
 use IEEE.std_logic_1164.all;
