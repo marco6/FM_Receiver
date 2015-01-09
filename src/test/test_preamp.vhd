@@ -34,8 +34,8 @@ architecture behavior of test_preamp is
 file vectors: text open read_mode is "test_preamp.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
 COMPONENT preamp
 PORT( clk : in std_logic;
-    input : in signed(N downto 0);
-    output : out signed(N downto 0)
+    input : in signed(N-1 downto 0);
+    output : out signed(N-1 downto 0)
     );
 END COMPONENT;
     
