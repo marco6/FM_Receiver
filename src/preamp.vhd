@@ -1,3 +1,21 @@
+--------------------------------------------------------------------------------
+-- Company: <Name>
+--
+-- File: preamp.vhd
+-- File history:
+--      <Revision number>: <Date>: <Comments>
+--      <Revision number>: <Date>: <Comments>
+--      <Revision number>: <Date>: <Comments>
+--
+-- Description: 
+--
+-- <Description here>
+--
+-- Targeted device: <Family::SmartFusion2> <Die::M2S010T> <Package::484 FBGA>
+-- Author: <Name>
+--
+--------------------------------------------------------------------------------
+
 library IEEE;
 
 use IEEE.std_logic_1164.all;
@@ -5,12 +23,12 @@ USE ieee.numeric_std.ALL;
 
 entity preamp is
 generic (
-		N : positive := 7    --per usare il file di testo ipotizzo campioni da 8 bit
+		N : positive := 8   --per usare il file di testo ipotizzo campioni da 8 bit
 	);
 port (
     clk : in std_logic;   
-    input : in std_logic_vector(N downto 0);   --valori dall'adc
-    output : out std_logic_vector(N downto 0)  --valori per il pll
+    input : in signed(N-1 downto 0);   --valori dall'adc
+    output : out signed(N-1 downto 0)  --valori per il pll
 );
 end preamp;
 
@@ -29,11 +47,13 @@ begin
    BEGIN
 
     if(clk='1') then
-        val<=to_integer(signed(input));
+        val<=to_integer(input);
         if(val >= 0) then
             output<=(others => '1');
+            output(N-1)<='0';
         else
             output<=(others => '0');
+            output(N-1)<='1';
         end if;
     
     end if;
