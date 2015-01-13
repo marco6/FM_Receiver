@@ -106,7 +106,7 @@ Helpers):
 - PDF tesi indiano: http://read.pudn.com/downloads166/ebook/757199/full%20digital%20FM%20receiver.pdf 
 - Clipping (per l'amplificatore radio): http://en.wikipedia.org/wiki/Clipping_%28audio%29 
 - Introduzione facile a git, per non sbagliare: http://rogerdudler.github.io/git-guide/index.it.html
-
+- Altra tesi su questo argomento che potrebbe servire: http://digitalcommons.calpoly.edu/cgi/viewcontent.cgi?article=1057&context=eesp
 # Note sul codice:
 
 Ragazzi piazzo quì qualche regoletta/consiglio per non smadonnare come 
