@@ -8,10 +8,10 @@ close all
 Fs = 1e6;
 
 % Frequenza di modulazione
-Fc = 6000;
+Fc = 5000;
 
 % Trasmetto 1/10 di secondo!
-t = 0:1/Fs:0.05; 
+t = 0:1/Fs:1; 
 
 % Input di prova
 x = sin(2*pi*300*t) + 3 * sin(2*pi*800*t) + 2 * sin(2*pi*600*t) + 3 * sin(2*pi*400*t);
@@ -40,8 +40,9 @@ z = z/max(z);
 
 z1 = filter(b,a,z);
 
-[b, a] = butter(4, 900/Fs, 'high');
+[b, a] = butter(4, 400/Fs, 'high');
 
 z1 = filter(b,a,z1);
 z1 = z1/max(z1);
 plot(t(1:length(t)-1400), [x(1:length(x)-1400);z1(1401:length(z1))]);
+
