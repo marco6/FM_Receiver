@@ -1,6 +1,3 @@
-
---------------------------------------------------------------------------------
-
 library IEEE;
 
 use IEEE.std_logic_1164.all;
@@ -14,7 +11,7 @@ generic (
 port (
     clk : in std_logic;   
     input : in signed(N-1 downto 0);   
-    output : out std_logic;  
+    output : out std_logic := '0';
     rst : in std_logic
 );
 end preamp;
