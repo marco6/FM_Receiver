@@ -8,14 +8,14 @@ use IEEE.numeric_std.all;
 library std;
 use std.textio.all;
 
-entity adderTest is
-end adderTest;
+entity test_adder is
+end test_adder;
 
 
 -- this is pratically a copy & paste of the shape filter test...
 -- Still working :D
 
-architecture Behavioral of adderTest is
+architecture Behavioral of test_adder is
 
 	-- Input file, generated with matlab that contains
 	-- a low freq sinusoid and a hi freq one! There is also some 
@@ -24,14 +24,16 @@ architecture Behavioral of adderTest is
 	--file f_in : TEXT open read_mode is "src/test/Filter_in.dat";
 	
 	-- The component to be tested
-	component adder is
-	generic ( N : positive := 12 );
-	port (
-		CLK, RST : in std_logic;
-		X : in std_logic;
-		Y : inout signed( N-1 downto 0)
-	);
-	end component;
+component adder is 
+	generic ( N : positive := 12 
+  			 );
+	port (CLK : in std_logic;
+		  RESET : in std_logic;
+		  df : in std_logic;         --input signal which determines the "sign" of the sum
+		  F : inout signed (N-1 downto 0)
+		  );
+end component;
+
 
 	-- Basic signals. Stop is needed to avoid infinite looping
 	signal clock,  STOP : std_logic := '0';
@@ -49,9 +51,9 @@ a_test: adder
 	generic map ( N => 12 )
 	port map ( 
 		CLK => clock, 
-		RST => reset, 
-		X => x_in, 
-		Y => open -- I leave this open... I will still see the output 
+		RESET => reset, 
+		df => x_in, 
+		F => open -- I leave this open... I will still see the output 
 				  -- in a good simulator
 	);
 	
