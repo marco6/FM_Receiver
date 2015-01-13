@@ -45,7 +45,7 @@ architecture Behavioral of adderTest is
 	constant clk_cycle : time := 1 us;
 begin
 	-- Instantiation... N is set to 12 since XADC is capable of that bit depth.
-a_test: TestAdder 
+a_test: adder 
 	generic map ( N => 12 )
 	port map ( 
 		CLK => clock, 
@@ -57,7 +57,7 @@ a_test: TestAdder
 	
 	-- Stop resetting after the first clock cycle
 	reset <= '0' after clk_cycle;
-	
+	STOP <= '1' after clk_cycle*1000;
 	-- This process generates the clock
 CLOCK_PROCESS:	
 	process
@@ -83,19 +83,11 @@ STIMULUS:
 		-- X = sin(50 PI t) + 0.5 sin(2 pi 30000 t)
 		-- with some additional noise (gaussian)
 		-- The format is one value per line
-		if(reset = '0' and clock = '0' and clock'event ) then
-			-- If there aren't other things to test...
-			if ( endfile(f_in) ) then
-				-- ...then stop the test!
-				STOP <= '1';
-			else
+		if(reset = '0' and clock = '0' and clock'event ) then			
 				--codice test 
-				X<= '1';
-				wait for 14 us;
-				X<= '0';
-				wait for 14 us;
-			end if;
+				x_in <= not x_in;
 		end if;
+		
 		-- No need for any loop... VHDL will take care!! Handy!
 	end process;
 end Behavioral;
