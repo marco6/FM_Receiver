@@ -47,15 +47,15 @@ architecture AsyncReset_Beh of ShapeFilter is
 	
 	
 	constant b1 : signed(N-1 downto 0) := to_signed(integer(0.0002 * Np2), N);
-	constant b2 : signed(N-1 downto 0) := to_signed(integer(0 * Np2), N);
+	constant b2 : signed(N-1 downto 0) := to_signed(integer(0.0 * Np2), N);
 	constant b3 : signed(N-1 downto 0) := to_signed(integer((-0.0011) * Np2), N);
-	constant b4 : signed(N-1 downto 0) := to_signed(integer(0 * Np2), N);
+	constant b4 : signed(N-1 downto 0) := to_signed(integer(0.0 * Np2), N);
 	constant b5 : signed(N-1 downto 0) := to_signed(integer(0.0023 * Np2), N);
-	constant b6 : signed(N-1 downto 0) := to_signed(integer(0*Np2), N);
-	constant b7 : signed(N-1 downto 0) := to_signed(integer((-0.0023) * Np2, N);
-	constant b8 : signed(N-1 downto 0) := to_signed(integer(0*Np2), N);
+	constant b6 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
+	constant b7 : signed(N-1 downto 0) := to_signed(integer((-0.0023) * Np2), N);
+	constant b8 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
 	constant b9 : signed(N-1 downto 0) := to_signed(integer(0.0011*Np2), N);
-	constant b10 : signed(N-1 downto 0) := to_signed(integer(0*Np2), N);
+	constant b10 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
 	constant b11 : signed(N-1 downto 0) := to_signed(integer((-0.0002)*Np2), N);
 		
 	-- temporary variable
