@@ -1,0 +1,11 @@
+--ThestBench of adder 
+
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.numeric_std.ALL;
+
+ENTITY TestBench IS
+END TestBench
+
+architecture test of TestBench is 
+component 
