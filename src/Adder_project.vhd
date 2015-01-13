@@ -26,7 +26,7 @@ begin
 		F <= (others => '0');
 	elsif rising_edge (CLK) then	
 		if (df = '1') then
-			F <= F - inc_signal;
+			F <= F + inc_signal;
 		else 
 			F <= F - inc_signal ; 
 		end if;
