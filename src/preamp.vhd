@@ -8,13 +8,13 @@ USE ieee.numeric_std.ALL;
 
 entity preamp is
 generic (
-		N : positive := 12; --per usare il file di testo ipotizzo campioni da 8 bit
-        soglia_isteresi : positive := 10
+		N : positive := 12; --output from xadc of 12 bit
+        soglia_isteresi : positive := 100  --isteresis to eliminate noise
 	);
 port (
     clk : in std_logic;   
-    input : in signed(N-1 downto 0);   --valori dall'adc
-    output : out std_logic;  --valori per il pll
+    input : in signed(N-1 downto 0);   
+    output : out std_logic;  
     rst : in std_logic
 );
 end preamp;
@@ -26,7 +26,7 @@ signal prec : std_logic;
 
 begin
     
-   Process(clk)
+   Process(clk)  
    BEGIN
     if(rst='1') then
         output <='0';
@@ -35,37 +35,37 @@ begin
         if(clk='1') then
             val<=input;
             if(val(N-1) = '0' and val<=soglia_isteresi) then
-                --se input positivo ma minore della soglia
+                --positive input but less than threshold
                 if(prec='1') then
-                    --se prec è positivo
+                    --if 'prec' is positive
                     output<='1';
                     prec<='1';
                 else
-                    --se prec è negativo
+                    --if 'prec' is negative
                     output<='0';
                     prec<='0';
                 end if;
             end if;
             if(val(N-1)='0' and val>soglia_isteresi) then
-                    --se input positivo e maggiore della soglia isteresi
+                    --if positive input greater than threshold
                     output<='1';
                     prec<='1';
             end if;
             
             if(val(N-1)='1' and val < (-soglia_isteresi)) then
-                    --se input è minore della soglia in negativo
+                    --if input less than negative threesold
                     output<='0';
                     prec<='0';
             end if;
             
             if(val(N-1)='1' and val> (-soglia_isteresi)) then
-                    --se input è negativo e maggiore della soglia in negativo
+                    --if negative input greater than negative threshold
                     if(prec='1') then
-                        --se prec è positivo
+                        --if 'prec' is positive
                         output<='1';
                         prec<='1';
                     else
-                        --se prec è negativo
+                        --if 'prec' is negative
                         output<='0';
                         prec<='0';
                     end if;
