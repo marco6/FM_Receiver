@@ -35,23 +35,34 @@ file vectors: text open read_mode is "test_preamp.dat";  --file di testo (da all
 COMPONENT preamp
 PORT( clk : in std_logic;
     input : in signed(N-1 downto 0);
-    output : out signed(N-1 downto 0)
+    output: out std_logic;
+    rst : in std_logic
     );
 END COMPONENT;
     
     --i nomi dei segnali sono copiati pari pari dal testbench del pdf
     SIGNAL clk : std_logic := '0' ;
     SIGNAL fmin : signed(N-1 downto 0) := (others => '0');
-    SIGNAL dmout : signed(N-1 downto 0);
-    constant clkperiod : time := 10.5 ns;
+    SIGNAL dmout : std_logic;
+    constant clkperiod : time := 10 ns;
+    signal reset: std_logic;
 
 begin
     
     --anche le funzioni per prendere i valori di volta in volta dal file, e usano la libreria textIO
     test: preamp port map (clk=>clk,
         input=>fmin,
-        output=>dmout);
+        output=>dmout,
+        rst=>reset);
     
+    RESET_GEN: process
+    begin
+        LOOP1: for N in 0 to 3 loop
+           wait until falling_edge(clk);
+        end loop LOOP1;
+        RESET <= '0' ;
+    end process RESET_GEN;
+
     clk <= not clk after clkperiod / 2;    
    process
         variable vectorline : line;
