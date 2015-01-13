@@ -9,18 +9,39 @@ entity clock_divider is
 	);
 	port (
 		CLK, RST : in std_logic; -- Clock and Reset needed
-		O_CLK : inout std_logic -- output is feeded as an input, so inout!
+		O_CLK : inout std_logic := '0'-- output is feeded as an input, so inout!
 	);
 end clock_divider;
 
 architecture Behavioral of clock_divider is
+	-- this holds my value
 	signal cnt : unsigned(N-1 downto 0);
+	--compute limit
+	constant limit : unsigned(N-1 downto 0) := to_unsigned( (DIV-1) / 2, N);
 begin
 	-- Sanity check, needed to avoid strange behavior
-	assert ( 2**N > DIV) report "N needs to be bigger to store DIV";
+	assert ( 2**(N+1) > DIV) report "N needs to be bigger to store DIV!! Increase N.";
 	
+	-- This process does the job!
 	process (CLK, RST) 
 	begin
-		
+		-- async reset for speed
+		if(RST = '1') then
+			cnt <= (others => '0');
+			O_CLK <= '0';
+		-- on rising edge 
+		elsif (rising_edge(CLK)) then
+			-- First I count up to DIV-1 if i didn't reach it yet
+			if (cnt /= limit) then
+				cnt <= cnt + to_unsigned(1, N); -- seems expensive, but in VHDL
+															   -- functions are solved to constants, 
+															   -- so... everything seems fine!
+			else
+				-- Hard reset 
+				cnt <= (others => '0');
+				-- And a nice change in the output clock
+				O_CLK <= not O_CLK;
+			end if;
+		end if;
 	end process;
 end architecture;
