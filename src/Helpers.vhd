@@ -17,10 +17,37 @@ package Helpers is
 	-- Questa funzione restituisce un numero senza segno con ampiezza N,
 	-- tenendo conto del segno durante la conversione.
 	function TO_UNSIGNED_RESIZE(L: SIGNED; N : POSITIVE) return UNSIGNED;
-
+	
+	-- Questa funzione fa il resize dei due tipi numerici, tenendo conto del segno
+	-- IN particolare, aggiunge N bit al numero
+	function RESIZE(L:SIGNED; N : POSITIVE) return SIGNED;
+	
+	-- Questa funzione fa il resize dei due tipi numerici
+	function RESIZE(L:UNSIGNED; N : POSITIVE) return UNSIGNED;
+	
 end Helpers;
 
 package body Helpers is
+
+	function RESIZE(L:SIGNED; N : POSITIVE) 
+		return SIGNED is
+		variable RET : SIGNED(N + L'length -1 downto 0);
+	begin
+		RET(N+ L'length -1 downto L'length) := (others=>L(L'left));
+		RET(L'length-1 downto 0) := L;
+		RETURN RET;
+	end RESIZE;
+
+	function RESIZE(L:UNSIGNED; N : POSITIVE) 
+		return UNSIGNED is
+		variable RET : UNSIGNED(N + L'length -1 downto 0);
+	begin
+		RET(N+ L'length -1 downto L'length) := (others=>'0');
+		RET(L'length-1 downto 0) := L;
+		RETURN RET;
+	end RESIZE;
+	
+	
 
 	function TO_UNSIGNED_RESIZE(L: SIGNED; N : POSITIVE) 
 		return UNSIGNED is
