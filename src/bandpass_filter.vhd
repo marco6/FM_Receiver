@@ -6,64 +6,61 @@ use IEEE.numeric_std.all;
 library work;
 use work.Helpers.all;
 
-entity ShapeFilter is
+entity passabanda is
 generic ( N : positive := 12 );
 port (
 	CLK, RST : in std_logic;
 	X : in signed( N-1 downto 0);
 	Y : inout signed( N-1 downto 0)
 );
-end ShapeFilter;
+end passabanda;
 
 --Transfer function coefficients of the filter, calculated whit matlab butter function;
--- b =
+-- >> [b, a] = butter(2,30/1000000, 'high')
 
---      0.0002         0   -0.0011         0    0.0023         0   -0.0023         0    0.0011         0   -0.0002
+-- b =    0.9999   -1.9999    0.9999
+-- a =    1.0000   -1.9999    0.9999
+
+-- >> [b, a] = butter(2,15000/1000000, 'low')
+
+-- b =    0.0005    0.0011    0.0005
+-- a =    1.0000   -1.9334    0.9355
 
 
--- a =
 
---      1.0000   -9.8478   43.6417 -114.6123  197.5338 -233.4568  191.6109 -107.8422   39.8326   -8.7188    0.8588
-
-
-
-architecture AsyncReset_Beh of ShapeFilter is
+architecture AsyncReset_Beh of passabanda is
 	
 	constant Np2 : real := (2.0 ** (N-2));
 	
 	
-	
-	constant a1 : signed(N-1 downto 0) := to_signed(integer((1.000) * Np2), N);
-	constant a2 : signed(N-1 downto 0) := to_signed(integer((-9.8478) * Np2), N);
-	constant a3 : signed(N-1 downto 0) := to_signed(integer((43.6417) * Np2), N);
-	constant a4 : signed(N-1 downto 0) := to_signed(integer((-114.6123) * Np2), N);
-	constant a5 : signed(N-1 downto 0) := to_signed(integer((197.5338) * Np2), N);
-	constant a6 : signed(N-1 downto 0) := to_signed(integer((-233.4568) * Np2), N);
-	constant a7 : signed(N-1 downto 0) := to_signed(integer(191.6109 * Np2), N);
-	constant a8 : signed(N-1 downto 0) := to_signed(integer((-107.8422) * Np2), N);
-	constant a9 : signed(N-1 downto 0) := to_signed(integer((39.8326) * Np2), N);
-	constant a10 : signed(N-1 downto 0) := to_signed(integer((-8.7188) * Np2), N);
-	constant a11 : signed(N-1 downto 0) := to_signed(integer((0.8588) * Np2), N);
+	-- the constants are normalized
+	constant a1l : signed(N-1 downto 0) := to_signed(integer((-1.9334) * Np2), N);
+	constant a2l : signed(N-1 downto 0) := to_signed(integer((0.9355) * Np2), N);
+
+	constant a1h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
+	constant a2h : signed(N-1 downto 0) := to_signed(integer((0.9999) * Np2), N);
+
 	
 	
-	constant b1 : signed(N-1 downto 0) := to_signed(integer(0.0002 * Np2), N);
-	constant b2 : signed(N-1 downto 0) := to_signed(integer(0.0 * Np2), N);
-	constant b3 : signed(N-1 downto 0) := to_signed(integer((-0.0011) * Np2), N);
-	constant b4 : signed(N-1 downto 0) := to_signed(integer(0.0 * Np2), N);
-	constant b5 : signed(N-1 downto 0) := to_signed(integer(0.0023 * Np2), N);
-	constant b6 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
-	constant b7 : signed(N-1 downto 0) := to_signed(integer((-0.0023) * Np2), N);
-	constant b8 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
-	constant b9 : signed(N-1 downto 0) := to_signed(integer(0.0011*Np2), N);
-	constant b10 : signed(N-1 downto 0) := to_signed(integer(0.0*Np2), N);
-	constant b11 : signed(N-1 downto 0) := to_signed(integer((-0.0002)*Np2), N);
+	constant b1l : signed(N-1 downto 0) := to_signed(integer(0.0005 * Np2), N);
+	constant b2l : signed(N-1 downto 0) := to_signed(integer(0.0011 * Np2), N);
+	constant b3l : signed(N-1 downto 0) := to_signed(integer((0.0005) * Np2), N);
+	
+	constant b1h : signed(N-1 downto 0) := to_signed(integer(0.9999 * Np2), N);
+	constant b2h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
+	constant b3h : signed(N-1 downto 0) := to_signed(integer(0.9999*Np2), N);
+	
 		
 	-- temporary variable
-	signal x1, x2, x3,x4,x5,x6,x7,x8,x9,x10,y1, y2, y3,y4,y5,y6,y7,y8,y9,y10 : signed(N-1 downto 0) := (others => '0');
+	signal x1, x2, x3,x4,x5,y1: signed(N-1 downto 0) := (others => '0');
+	--signal tmp : signed(2*N-1	downto 0);
+	
 begin
 	--
 	process (CLK, RST)
-		variable tmp : signed(3*N-1 downto 0) := (others => '0'); --sized for ensure to not overflow
+		variable tmp : signed(2*N-1 downto 0);-- tmp := (others => '0'); --sized for ensure to not overflow (2*N-1) perchè funziona anche se io ne ho bisogno di più bit 
+		--provare domani dinuovo con la divisione e capire perchè non funziona con i 32 bit ma con gli 23 si
+		
 	begin
 		-- Async reset
 		if (RST = '1') then
@@ -73,63 +70,47 @@ begin
 			x3 <= (others => '0');
 			x4 <= (others => '0');
 			x5 <= (others => '0');
-			x6 <= (others => '0');
-			x7 <= (others => '0');
-			x8 <= (others => '0');
-			x9 <= (others => '0');
-			x10 <= (others => '0');
+		
 			y1 <= (others => '0');
-			y2 <= (others => '0');
-			y3 <= (others => '0');
-			y4 <= (others => '0');
-			y5 <= (others => '0');
-			y6 <= (others => '0');
-			y7 <= (others => '0');
-			y8 <= (others => '0');
-			y9 <= (others => '0');
-			y10 <= (others => '0');
+			
+			
+			
+			tmp := (others => '0');
 			
 			Y <= (others => '0');
 			
 			
 		elsif (CLK = '1' AND CLK'event) then
 			-- now.. I compute first the non recursive part of the filter
-			tmp := x * b1 + x1 * b2 + x2 * b3 + x3 * b4 + x4 * b5 + x5 * b6 + x6 * b7 + x7 * b8 + x8 * b9 +x9 * b10 + x10 * b11 ;
-			-- and than I immediatly apply the gain to avoid that
-			-- y registers grow too high!
-			
-			-- The gain is 0.00301... ~= 3/1000 ~= 4/1024 ~= 1/256 no sono già normalizzati
-			--tmp := sar(tmp, 8); 
-			
+			tmp := x * b1l + x1 * b2l + x2 * b3l ;			
 			-- Now I add the recursive part!
-			tmp := tmp - y * a1 - y1 * a2- y2 * a3 - y3 * a4- y4 * a5- y5 * a6- y6 * a7- y7 * a8- y8 * a9- y9 * a10- y10 * a11;
+			tmp := tmp - x4 * a1l - x3 * a2l;--braccio di retroazione dul primo filtro
+			
+			-- resize the tmp value for putting it in to imput of the low pass filter
+			tmp := sar(tmp, N);-- a questo punto non è male
+			
+			x3<= tmp(N-1 downto 0);--become imput for low pass
+			tmp := x3 * b1h + x4 * b2h + x5 * b3h ;			
+			-- Now I add the recursive part!
+			tmp := tmp - y1 * a1h - y * a2h;-- all'uscita da questo è una merda 
+			
 			
 			-- resize the tmp value for putting it in to output
+			tmp := sar(tmp, N);
 			
-			tmp := sar(tmp, N+4);
 			
 			-- take new value 
-			y10 <= y9;
-			y9 <= y8;
-			y8 <= y7;
-			y7 <= y6;
-			y6 <= y5;
-			y5 <= y4;
-			y4 <= y3;
-			y3 <= y2;
-			y2 <= y1;
 			y1 <= y;
-			y <= tmp(N-1 downto 0);
-			x10 <= x9;
-			x9 <= x8;
-			x8 <= x7;
-			x7 <= x6;
-			x6 <= x5;
+			y <= tmp(N-1 downto 0);-- devo rimettere la divisione perchè i bit più alti potrebbero tranquillamente essere vuoti
+			
+			
+			--for high pass
 			x5 <= x4;
 			x4 <= x3;
-			x3 <= x2;
+			--for low pass
 			x2 <= x1;
 			x1 <= x;
+			
 		end if;
 	end process;
 end architecture;
