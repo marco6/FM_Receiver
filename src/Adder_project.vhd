@@ -33,7 +33,7 @@ begin
 			--F <= F + inc_signal;
 			f2<= f2  + inc_signal;
 		else 
-			f2 <= f2  + inc_signal ; 
+			f2 <= f2  - inc_signal ; 
 		end if;
 		F<=f2;
 	end if;
