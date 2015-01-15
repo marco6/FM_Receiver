@@ -11,7 +11,7 @@ generic ( N : positive := 12 );
 port (
 	CLK, RST : in std_logic;
 	X : in signed( N-1 downto 0);
-	Y : inout signed( N-1 downto 0)
+	Y : out signed( N-1 downto 0)
 );
 end passabanda;
 
@@ -51,16 +51,15 @@ architecture AsyncReset_Beh of passabanda is
 	
 		
 	-- temporary variable
-	signal x1, x2, x3,x4,x5,y1: signed(N-1 downto 0) := (others => '0');
-	--signal tmp : signed(2*N-1	downto 0);
+	signal x1, x2, x3,x4,x5,y1, y_retr: signed(N-1 downto 0) := (others => '0');
 	
 begin
 	--
 	process (CLK, RST)
-		variable tmp : signed(27 downto 0);-- tmp := (others => '0'); --sized for ensure to not overflow (2*N-1) perchè funziona anche se io ne ho bisogno di più bit 
-		--provare domani dinuovo con la divisione e capire perchè non funziona con i 32 bit ma con gli 23 si
-		variable add1, add2, add3, sub1, sub2 :signed(27 downto 0);
+		variable tmp : signed(27 downto 0);
+		variable add1, add2, add3, sub1, sub2 :signed(27 downto 0);--variabili necessarie per garantire di non andare in overflow
 		variable mul1,mul2,mul3, mul4, mul5 :signed(2*N-1 downto 0);
+		
 	begin
 		-- Async reset
 		if (RST = '1') then
@@ -76,6 +75,7 @@ begin
 			
 			
 			tmp := (others => '0');
+			y_retr <=(others => '0');
 			
 			Y <= (others => '0');
 			
@@ -107,9 +107,11 @@ begin
 			else
 			add3:="1111"&mul3;
 			end if;
+			
+			
 			--denominatore
 			
-			mul4 := y * a1l;
+			mul4 := y_retr * a1l;
 			if (mul4(mul4'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
 			sub1:="0000"&mul4;
@@ -134,8 +136,12 @@ begin
 			
 			
 			-- take new value 
-			y1 <= y;
-			y <= tmp(N-1 downto 0);-- devo rimettere la divisione perchè i bit più alti potrebbero tranquillamente essere vuoti
+			y1 <= y_retr;
+			y_retr <= tmp(N-1 downto 0);
+			
+			--put result in output
+			y <= tmp(N-1 downto 0);
+			
 			
 			--for low pass
 			x2 <= x1;
