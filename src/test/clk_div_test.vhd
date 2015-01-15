@@ -16,7 +16,7 @@ architecture Behavioral of clk_div_test is
 		);
 		port (
 			CLK, RST : in std_logic;
-			O_CLK : inout std_logic := '0'
+			O_CLK : out std_logic := '0'
 		);
 	end component;
 	

@@ -9,7 +9,7 @@ entity clock_divider is
 	);
 	port (
 		CLK, RST : in std_logic; -- Clock and Reset needed
-		O_CLK : inout std_logic := '0'-- output is feeded as an input, so inout!
+		O_CLK : out std_logic := '0'-- output is feeded as an input, so inout!
 	);
 end clock_divider;
 
@@ -23,25 +23,27 @@ begin
 	assert ( 2**(N+1) > DIV) report "N needs to be bigger to store DIV!! Increase N.";
 	
 	-- This process does the job!
-	process (CLK, RST) 
+	process (CLK, RST)
+		variable INTERNAL_CLOCK : std_logic := '0';
 	begin
 		-- async reset for speed
 		if(RST = '1') then
 			cnt <= (others => '0');
-			O_CLK <= '0';
+			INTERNAL_CLOCK := '0';
 		-- on rising edge 
 		elsif (rising_edge(CLK)) then
 			-- First I count up to DIV-1 if i didn't reach it yet
 			if (cnt /= limit) then
 				cnt <= cnt + to_unsigned(1, N); -- seems expensive, but in VHDL
-															   -- functions are solved to constants, 
-															   -- so... everything seems fine!
+												-- functions are solved to constants, 
+												-- so... everything seems fine!
 			else
 				-- Hard reset 
 				cnt <= (others => '0');
 				-- And a nice change in the output clock
-				O_CLK <= not O_CLK;
+				INTERNAL_CLOCK := not INTERNAL_CLOCK;
 			end if;
 		end if;
+		O_CLK <= INTERNAL_CLOCK;
 	end process;
 end architecture;
