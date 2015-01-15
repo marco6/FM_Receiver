@@ -12,7 +12,7 @@ architecture behavior of test_passabanda is
 	--dovrebbe partire immediatamente, prende un valore dal file ogni 4 periodi di clock e fa il suo sporco lavoro
     constant N : positive := 12;
 
-	file vectors: text open read_mode is "src/test/test_passband.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
+	file vectors: text open read_mode is "src/test/test_preamp.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
 
 	component passabanda is
 	generic ( N : positive := 12 );
@@ -22,7 +22,7 @@ architecture behavior of test_passabanda is
 		Y : inout signed( N-1 downto 0)
 	);
 	end component;
-    
+
     --i nomi dei segnali sono copiati pari pari dal testbench del pdf
     SIGNAL clk : std_logic := '0' ;
     SIGNAL fmin : signed(N-1 downto 0) := (others => '0');
@@ -36,9 +36,9 @@ test: passabanda
 		y=> open,
 		rst=>reset
 	);
-    
+
 	RESET <= '0' after clkperiod*4;
-	
+
 	clk <= not clk after clkperiod / 2 when not endfile(vectors) else unaffected;
 
 	process (clk)

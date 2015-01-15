@@ -13,8 +13,8 @@ port (
 end fm_receiver;
 
 architecture structure of fm_receiver is
-	
-	
+
+
 component demodulator is
 generic ( N : positive := 12 );
 port (
@@ -34,7 +34,7 @@ port (
 end component;
 
 
-signal s1 : std_logic;
+signal s1 : signed(N-1 downto 0);
 
 
 begin
@@ -42,12 +42,12 @@ begin
 	C1: demodulator
 	port map (
 		--segnale del component=> segnale interno o esterno
-		clk => clk, 
-		rst => rst,   
+		clk => clk,
+		rst => rst,
 		fin => fin,
 		fout => s1    --ERRORE QUI
 	);
-	
+
 	C2: passabanda
 	port map (
 		clk => clk,
@@ -55,6 +55,6 @@ begin
 		X => s1,    --ERRORE QUI
 		Y => fout
 	);
-	
+
 
 end architecture;
