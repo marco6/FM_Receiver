@@ -8,19 +8,19 @@ entity fm_receiver is
 port (
 	clk, rst : in std_logic;
 	fin : in signed( N-1 downto 0);
-	fout : inout signed( N-1 downto 0)
+	fout : out signed( N-1 downto 0)
 );
 end fm_receiver;
 
 architecture structure of fm_receiver is
-
-
+	
+	
 component demodulator is
 generic ( N : positive := 12 );
 port (
 	clk, rst : in std_logic;
 	fin : in signed( N-1 downto 0);
-	fout : inout signed( N-1 downto 0)
+	fout : out signed( N-1 downto 0)
 );
 end component;
 
@@ -29,7 +29,7 @@ generic ( N : positive := 12 );
 port (
 	CLK, RST : in std_logic;
 	X : in signed( N-1 downto 0);
-	Y : inout signed( N-1 downto 0)
+	Y : out signed( N-1 downto 0)
 );
 end component;
 
@@ -42,19 +42,19 @@ begin
 	C1: demodulator
 	port map (
 		--segnale del component=> segnale interno o esterno
-		clk => clk,
-		rst => rst,
+		clk => clk, 
+		rst => rst,   
 		fin => fin,
-		fout => s1    --ERRORE QUI
+		fout => s1    
 	);
-
+	
 	C2: passabanda
 	port map (
 		clk => clk,
 		rst => rst,
-		X => s1,    --ERRORE QUI
+		X => s1,    
 		Y => fout
 	);
-
+	
 
 end architecture;

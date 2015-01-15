@@ -8,7 +8,7 @@ entity Demodulator is
 port (
 	clk, rst : in std_logic;
 	fin : in signed( N-1 downto 0);
-	fout : inout signed( N-1 downto 0)
+	fout : out signed( N-1 downto 0)
 );
 end Demodulator;
 
@@ -43,7 +43,9 @@ component adder is
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
 		  df : in std_logic;         --input signal which determines the "sign" of the sum
-		  F : inout signed (N-1 downto 0)
+		  --F : inout signed (N-1 downto 0);
+		  F : out signed (N-1 downto 0)
+		  --f1 : in signed(N-1 downto 0)  --input accumulator
 		  );
 end component;
 
