@@ -36,16 +36,15 @@ architecture AsyncReset_Beh of passabanda is
 	-- the constants are normalized
 	constant a1l : signed(N-1 downto 0) := to_signed(integer((-1.9334) * Np2), N);
 	constant a2l : signed(N-1 downto 0) := to_signed(integer((0.9355) * Np2), N);
-
-	constant a1h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
-	constant a2h : signed(N-1 downto 0) := to_signed(integer((0.9999) * Np2), N);
-
-	
 	
 	constant b1l : signed(N-1 downto 0) := to_signed(integer(0.0005 * Np2), N);
 	constant b2l : signed(N-1 downto 0) := to_signed(integer(0.0011 * Np2), N);
 	constant b3l : signed(N-1 downto 0) := to_signed(integer((0.0005) * Np2), N);
 	
+
+	constant a1h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
+	constant a2h : signed(N-1 downto 0) := to_signed(integer((0.9999) * Np2), N);
+
 	constant b1h : signed(N-1 downto 0) := to_signed(integer(0.9999 * Np2), N);
 	constant b2h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
 	constant b3h : signed(N-1 downto 0) := to_signed(integer(0.9999*Np2), N);
@@ -85,58 +84,53 @@ begin
 			-- now.. I compute first the non recursive part of the filter
 			--numeratore
 			mul1 := x * b1l; 
-			if (mul1(N-1)='0') -- brutale bisogna poi farci una funzioncina per eleganza
+			if (mul1(mul1'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
-			add1:="0000000000000000" & mul1;
-			elsif(mul1(N-1)='1')
-			then
-			add1:="1111111111111111"&mul1;
+			add1:="0000" & mul1; -- Qui semplicemente stavi passando da 24 a 28 non da 12 a 28.... la stanchezza fa brutti scherzi! xD
+			else
+			add1:="1111"&mul1;
 			end if;
 			
 			mul2 := x1 * b2l; 
-			if (mul2(N-1)='0') -- brutale bisogna poi farci una funzioncina per eleganza
+			if (mul2(mul2'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
-			add2:="0000000000000000"&mul2;
-			elsif(mul2(N-1)='1')
-			then
-			add2:="1111111111111111"&mul2;
+				add2:="0000"&mul2;
+			else
+				add2:="1111"&mul2;
 			end if;
 			
 			
 			mul3 := x2 * b3l;
-			if (mul3(N-1)='0') -- brutale bisogna poi farci una funzioncina per eleganza
+			if (mul3(mul3'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
-			add3:="0000000000000000"&mul3;
-			elsif(mul3(N-1)='1')
-			then
-			add3:="1111111111111111"&mul3;
+				add3:="0000"&mul3;
+			else
+			add3:="1111"&mul3;
 			end if;
 			--denominatore
 			
-			mul4 := y1 * a1l;
-			if (mul4(N-1)='0') -- brutale bisogna poi farci una funzioncina per eleganza
+			mul4 := y * a1l;
+			if (mul4(mul4'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
-			sub1:="0000000000000000"&mul4;
-			elsif(mul4(N-1)='1')
-			then
-			sub1:="1111111111111111"&mul4;
+			sub1:="0000"&mul4;
+			else
+			sub1:="1111"&mul4;
 			end if;
 			
 			
-			mul5 := y * a2l;
-			if (mul5(N-1)='0') -- brutale bisogna poi farci una funzioncina per eleganza
+			mul5 := y1 * a2l;
+			if (mul5(mul5'left)='0') -- brutale bisogna poi farci una funzioncina per eleganza
 			then
-			sub2:="0000000000000000"&mul5;
-			elsif(mul5(N-1)='1')
-			then
-			sub2:="1111111111111111"&mul5;
+			sub2:="0000"&mul5;
+			else
+			sub2:="1111"&mul5;
 			end if;
 			
 			
 			tmp := add1 + add2+ add3 - sub1- sub2; --braccio di retroazione sul filtro			
 			
 			-- resize the tmp value for putting it in to output
-			tmp := sar(tmp, N);
+			tmp := sar(tmp, N-2);
 			
 			
 			-- take new value 

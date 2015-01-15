@@ -9,4 +9,4 @@ run/%:
 	$(MAKE) -C ../.. $@
 	
 %:
-	$(MAKE) -C ../.. test/$@
+	$(MAKE) -C ../.. run/$@
