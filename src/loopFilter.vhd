@@ -13,7 +13,8 @@ generic ( N: positive := 12
 port (CLK : in std_logic;
 	  RESET : in std_logic;
 	  filter_in : signed (N-1 downto 0);
-	  filter_out : signed (N-1 downto 0)
+	  filter_out1 : signed (N-1 downto 0);
+	  filter_out2 : signed (N-1 downto 0)
 	 );
 
 end loop_filter;

@@ -99,6 +99,89 @@ begin
 end architecture;
 
 
---architecture Pll of Demodulator is
---begin
---end architecture;
+architecture Pll of Demodulator is
+  
+  --dichiarazione segnali interni
+  signal s1 : signed(N-1 downto 0);
+	signal s2 : signed(N-1 downto 0);
+	signal s3 : signed(N-1 downto 0);
+  --dichiarazione component
+  
+COMPONENT phase_divider
+  generic ( N : positive := 12 
+  			 );
+PORT ( clk    : IN std_logic ;
+       reset  : IN std_logic ;
+       input1 : IN signed (N-1 DOWNTO 0);
+       input2 : IN signed (N-1 DOWNTO 0);
+       output : OUT signed (N-1 DOWNTO 0)
+     );
+END COMPONENT;
+
+component loop_filter is
+generic ( N: positive := 12
+		);
+port (CLK : in std_logic;
+	  RESET : in std_logic;
+	  filter_in : in signed (N-1 downto 0);
+	  filter_out1 : out signed (N-1 downto 0);   --serve una doppia uscita, una verso il filtro e una in retroaz all'nco
+	  filter_out2 : out signed (N-1 downto 0)
+	 );
+end component;
+
+component NCO is
+generic ( N, -- Questa è il numero di bit in ingresso (addressing space)
+		M -- Questa invece è la larghezza in bit dell'uscita
+		: positive := 12 -- entrambi sono di default a 12 bit perchè fa 
+						 -- fa comodo visto che l'xadc sputa 12 bit
+		);
+port (
+	CLK, RST : in std_logic;
+	STEP : in unsigned(N-1 downto 0); -- Parte programmabile del NCO...
+									  -- in pratica decide la frequenza
+									  -- di demodulazione.
+									  -- Sotto c'è una spiegazione di
+									  -- come calcolre la frequenza
+									  -- dato N.
+	E_IN : in signed(N-1 downto 0); -- Errore di fase: serve al NCO per
+									-- riuscire a seguire il segnale.
+									-- E' in pratica l'ingresso che 
+									-- proviene dal loop.
+	C_OUT : out signed(M-1 downto 0)-- Output: l'onda generata.
+);
+end component;
+
+
+
+
+  begin
+  --port mappe
+  c1: phase_divider
+  port map (
+  clk => clk,
+       reset  => rst,
+       input1 => fin,
+       input2 => s3,
+       output => s1
+    );
+	
+	c2: loop_filter
+	port map(
+		CLK => clk,
+	  RESET => rst,
+	  filter_in => s1,
+	  filter_out1 => fout,   --serve una doppia uscita, una verso il filtro e una in retroaz all'nco
+	  filter_out2 => s2
+	);
+   
+   c3: NCO
+   port map(
+   clk => clk,
+   rst => rst,
+   --E_in => 'Z',
+   C_OUT => s3  
+   );
+   
+   
+   
+  end architecture;
