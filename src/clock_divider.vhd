@@ -9,7 +9,7 @@ entity clock_divider is
 	);
 	port (
 		CLK, RST : in std_logic; -- Clock and Reset needed
-		O_CLK : out std_logic := '0'-- output is feeded as an input, so inout!
+		O_CLK : out std_logic := '1'-- output is feeded as an input, so inout!
 	);
 end clock_divider;
 
@@ -29,7 +29,7 @@ begin
 		-- async reset for speed
 		if(RST = '1') then
 			cnt <= (others => '0');
-			INTERNAL_CLOCK := '0';
+			INTERNAL_CLOCK := '1';
 		-- on rising edge 
 		elsif (rising_edge(CLK)) then
 			-- First I count up to DIV-1 if i didn't reach it yet

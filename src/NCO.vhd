@@ -118,7 +118,7 @@ end architecture;
 -- Ma se avete un'idea migliore sono aperto a proposte!
 architecture UnitCare_Beh of NCO is
 	-- questa serve sempre
-	component cos_rom is
+	component cosine_rom is
 		generic ( N, M : positive := 12 );
 		port (
 			CLK : in std_logic;
@@ -142,7 +142,7 @@ begin
 	-- per tamponare questo effetto, si prende un addressing space
 	-- maggiore (2 bit in più). In questo modo la frequenza minima 
 	-- diminuisce addirittura di un fattore di 4/PI. Non di tanto quindi.
-c_gen: cos_rom
+c_gen: cosine_rom
 	generic map(
 		N => (N+2), -- come dicevo prima, due bit aggiuntivi!
 		M => M) -- qui invece tutto uguale!

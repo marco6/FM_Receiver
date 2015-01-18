@@ -47,7 +47,7 @@ begin
 		variable vectorline : line;
 		variable fmin_var : integer;
     begin
-		if(not reset) then
+		if(reset = '0' and rising_edge(clk)) then
 			if ( not endfile(vectors) ) then
 				readline(vectors, vectorline);
 				read(vectorline, fmin_var);

@@ -6,14 +6,14 @@ use IEEE.numeric_std.all;
 library work;
 use work.Helpers.all;
 
-entity passabanda is
+entity passabanda_old is
 generic ( N : positive := 12 );
 port (
 	CLK, RST : in std_logic;
 	X : in signed( N-1 downto 0);
 	Y : inout signed( N-1 downto 0)
 );
-end passabanda;
+end passabanda_old;
 
 --Transfer function coefficients of the filter, calculated whit matlab butter function;
 -- >> [b, a] = butter(2,30/1000000, 'high')
@@ -28,7 +28,7 @@ end passabanda;
 
 
 
-architecture AsyncReset_Beh of passabanda is
+architecture AsyncReset_Beh of passabanda_old is
 	
 	constant Np2 : real := (2.0 ** (N-2));
 	
@@ -52,7 +52,7 @@ architecture AsyncReset_Beh of passabanda is
 	
 		
 	-- temporary variable
-	signal x1, x2, x3,x4,x5,y1: signed(N-1 downto 0) := (others => '0');
+	signal x1, x2, x3, x4, x5, y1: signed(N-1 downto 0) := (others => '0');
 	--signal tmp : signed(2*N-1	downto 0);
 	
 begin

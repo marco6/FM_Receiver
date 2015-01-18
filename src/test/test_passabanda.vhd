@@ -12,7 +12,7 @@ architecture behavior of test_passabanda is
 	--dovrebbe partire immediatamente, prende un valore dal file ogni 4 periodi di clock e fa il suo sporco lavoro
     constant N : positive := 12;
 
-	file vectors: text open read_mode is "src/test/test_preamp.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
+	file vectors: text open read_mode is "src/test/test_preamp_noise.dat";  --file di testo (da allegare con IMPORT su microsemi, non so sul vostro)
 
 	component passabanda is
 	generic ( N : positive := 12 );
