@@ -45,7 +45,7 @@ architecture Pll of Demodulator is
 		filter_out : out signed (N-1 downto 0)
 	);
 	end component;
-
+	
 	component NCO is
 	generic ( 
 		N, -- Questa è il numero di bit in ingresso (addressing space)
@@ -108,6 +108,7 @@ architecture Dpll of Demodulator is
 	signal s1 : std_logic;
 	signal s2 : std_logic;
 	signal s3 : std_logic;
+	signal s4 : signed(N-1 downto 0);
 	
 component preamp is
 generic (
@@ -138,6 +139,19 @@ component adder is
 		  --F : inout signed (N-1 downto 0);
 		  F : out signed (N-1 downto 0)
 		  --f1 : in signed(N-1 downto 0)  --input accumulator
+		  );
+end component;
+
+component decimator is 
+	generic ( N : positive := 12;
+			-- one good sample each M input sample
+			M : positive := 20
+  			 );
+	port (CLK : in std_logic;
+		  RESET : in std_logic;
+		  Fin : in signed (N-1 downto 0);         --input signal which is the actual value of adder
+		  --output signal which one of valide sample
+		  Fout: out signed (N-1 downto 0)
 		  );
 end component;
 
@@ -185,7 +199,15 @@ begin
 		CLK => clk,
 		RESET => rst,
 		df => s3,
-		F => fout
+		F => s4
+	);
+	
+	C5: decimator
+	port map (
+		CLK => clk,
+		RESET => rst,
+		Fin => s4,
+		Fout => fout
 	);
 
 end architecture;

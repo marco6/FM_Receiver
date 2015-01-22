@@ -24,8 +24,6 @@ architecture Behavioral of clk_div_test is
 	signal clock,  STOP : std_logic := '0';
 	signal reset : std_logic := '1'; -- Start by resetting everything
 	
-	-- Since this is a test, this could be anything.
-	-- Still the real clock period needs to be 1 us, because we need to
 	-- Process samples @ 1 Mhz! So...
 	constant clk_cycle : time := 1 us;
 begin
