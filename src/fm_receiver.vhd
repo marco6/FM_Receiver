@@ -36,21 +36,20 @@ begin
 
 dem: demodulator
 	port map (
-		--segnale del component=> segnale interno o esterno
-		clk => clk, 
-		rst => rst,   
+		clk => clk,
+		rst => rst,
 		fin => fin,
-		fout => s1    
+		fout => s1
 	);
-	
+
 shaper: passabanda
 	port map (
 		clk => clk,
 		rst => rst,
-		X => s1,    
+		X => s1,
 		Y => fout
 	);
-	
+
 
 end architecture;
 
