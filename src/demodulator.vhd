@@ -15,11 +15,12 @@ end Demodulator;
 
 architecture Pll of Demodulator is
   
-	--dichiarazione segnali interni
+	--internal signals
 	signal s1 : signed(N-1 downto 0);
 	signal s2 : signed(N-1 downto 0);
 	signal s3 : signed(N-1 downto 0);
-	--dichiarazione component
+	
+	--components declaration
   
 	component phase_detector is
 	generic ( 
@@ -48,11 +49,9 @@ architecture Pll of Demodulator is
 	
 	component NCO is
 	generic ( 
-		N, -- Questa è il numero di bit in ingresso (addressing space)
-		M -- Questa invece è la larghezza in bit dell'uscita
-		: positive := 12 -- entrambi sono di default a 12 bit perchè fa 
-						 -- fa comodo visto che l'xadc sputa 12 bit
-	);
+		N, 
+		M : positive := 12 
+		 );
 	port (
 		CLK, RST : in std_logic;
 		STEP : in unsigned(N-1 downto 0);
@@ -99,21 +98,26 @@ oscilaltor: NCO
 		C_OUT => s3  
 	);
 	
-	-- mappiamo anche l'uscita!
+	-- also map the output
 	fout <= s2;
 
 end architecture;
 
 architecture Dpll of Demodulator is
+	
+	--internal signals
+
 	signal s1 : std_logic;
 	signal s2 : std_logic;
 	signal s3 : std_logic;
 	signal s4 : signed(N-1 downto 0);
 	
+	--components declaration
+
 component preamp is
 generic (
-		N : positive := 12; --output from xadc of 12 bit
-        soglia_isteresi : positive := 100  --isteresis to eliminate noise
+		N : positive := 12; 
+        soglia_isteresi : positive := 100  
 	);
 port (
     clk : in std_logic;   
@@ -135,34 +139,30 @@ component adder is
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
-		  df : in std_logic;         --input signal which determines the "sign" of the sum
-		  --F : inout signed (N-1 downto 0);
+		  df : in std_logic;         
 		  F : out signed (N-1 downto 0)
-		  --f1 : in signed(N-1 downto 0)  --input accumulator
 		  );
 end component;
 
 component decimator is 
 	generic ( N : positive := 12;
-			-- one good sample each M input sample
 			M : positive := 20
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
-		  Fin : in signed (N-1 downto 0);         --input signal which is the actual value of adder
-		  --output signal which one of valide sample
+		  Fin : in signed (N-1 downto 0);         
 		  Fout: out signed (N-1 downto 0)
 		  );
 end component;
 
 component clock_divider is
 	generic(
-		N : positive := 8; -- Number of bits to store the counter
+		N : positive := 8; 
 		DIV : positive := 200 
 	);
 	port (
-		CLK, RST : in std_logic; -- Clock and Reset needed
-		O_CLK : inout std_logic := '0'-- output is feeded as an input, so inout!
+		CLK, RST : in std_logic; 
+		O_CLK : inout std_logic := '0'
 	);
 end component;
 
@@ -172,7 +172,7 @@ begin
 
 	C1: preamp
 	port map (
-		--segnale del component=> segnale interno o esterno
+		
 		clk => clk, 
 		input => fin,   
 		output => s1,
