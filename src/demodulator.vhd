@@ -14,18 +14,18 @@ end Demodulator;
 
 
 architecture Pll of Demodulator is
-  
+
 	--dichiarazione segnali interni
 	signal s1 : signed(N-1 downto 0);
 	signal s2 : signed(N-1 downto 0);
 	signal s3 : signed(N-1 downto 0);
 	--dichiarazione component
-  
+
 	component phase_detector is
-	generic ( 
-		N : positive := 12 
+	generic (
+		N : positive := 12
   	);
-	port ( 
+	port (
 		clk    : in std_logic ;
 		reset  : in std_logic ;
 		input1 : in signed (n-1 downto 0);
@@ -35,7 +35,7 @@ architecture Pll of Demodulator is
 	end component;
 
 	component loop_filter is
-	generic ( 
+	generic (
 		N: positive := 12
 	);
 	port (
@@ -45,12 +45,12 @@ architecture Pll of Demodulator is
 		filter_out : out signed (N-1 downto 0)
 	);
 	end component;
-	
+
 	component NCO is
-	generic ( 
+	generic (
 		N, -- Questa è il numero di bit in ingresso (addressing space)
 		M -- Questa invece è la larghezza in bit dell'uscita
-		: positive := 12 -- entrambi sono di default a 12 bit perchè fa 
+		: positive := 12 -- entrambi sono di default a 12 bit perchè fa
 						 -- fa comodo visto che l'xadc sputa 12 bit
 	);
 	port (
@@ -74,7 +74,7 @@ phd: phase_detector
 		input2 => s3,
 		output => s1
     );
-	
+
 filter: loop_filter
 	generic map (
 		N => N
@@ -85,7 +85,7 @@ filter: loop_filter
 		filter_in => s1,
 		filter_out => s2
 	);
-   
+
 oscilaltor: NCO
 	generic map (
 		N => N,
@@ -96,9 +96,9 @@ oscilaltor: NCO
 		rst => rst,
 		STEP => to_unsigned(1, N),
 		E_in => s2,
-		C_OUT => s3  
+		C_OUT => s3
 	);
-	
+
 	-- mappiamo anche l'uscita!
 	fout <= s2;
 
@@ -109,15 +109,15 @@ architecture Dpll of Demodulator is
 	signal s2 : std_logic;
 	signal s3 : std_logic;
 	signal s4 : signed(N-1 downto 0);
-	
+
 component preamp is
 generic (
 		N : positive := 12; --output from xadc of 12 bit
         soglia_isteresi : positive := 100  --isteresis to eliminate noise
 	);
 port (
-    clk : in std_logic;   
-    input : in signed(N-1 downto 0);   
+    clk : in std_logic;
+    input : in signed(N-1 downto 0);
     output : out std_logic := '0';
     rst : in std_logic
 );
@@ -130,8 +130,8 @@ component SyncXor is
 	);
 end component;
 
-component adder is 
-	generic ( N : positive := 12 
+component adder is
+	generic ( N : positive := 12
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
@@ -142,10 +142,10 @@ component adder is
 		  );
 end component;
 
-component decimator is 
+component decimator is
 	generic ( N : positive := 12;
 			-- one good sample each M input sample
-			M : positive := 20
+			DIV : positive := 200
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
@@ -158,7 +158,7 @@ end component;
 component clock_divider is
 	generic(
 		N : positive := 8; -- Number of bits to store the counter
-		DIV : positive := 200 
+		DIV : positive := 200
 	);
 	port (
 		CLK, RST : in std_logic; -- Clock and Reset needed
@@ -173,12 +173,12 @@ begin
 	C1: preamp
 	port map (
 		--segnale del component=> segnale interno o esterno
-		clk => clk, 
-		input => fin,   
+		clk => clk,
+		input => fin,
 		output => s1,
 		rst => rst
 	);
-	
+
 	C2: SyncXor
 	port map (
 		clk => clk,
@@ -186,14 +186,14 @@ begin
 		B => s2,
 		C => s3
 	);
-	
+
 	C3: clock_divider
 	port map (
 		clk => clk,
 		rst => rst,
 		O_CLK => s2
 	);
-	
+
 	C4: adder
 	port map (
 		CLK => clk,
@@ -201,7 +201,7 @@ begin
 		df => s3,
 		F => s4
 	);
-	
+
 	C5: decimator
 	port map (
 		CLK => clk,
