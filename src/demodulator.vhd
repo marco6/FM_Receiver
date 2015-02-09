@@ -22,16 +22,7 @@ architecture Pll of Demodulator is
 	signal s3 : signed(N-1 downto 0);
 	
 	--components declaration
-  
-
-
-	--dichiarazione segnali interni
-	signal s1 : signed(N-1 downto 0);
-	signal s2 : signed(N-1 downto 0);
-	signal s3 : signed(N-1 downto 0);
-	--dichiarazione component
-
-
+	
 	component phase_detector is
 	generic (
 		N : positive := 12
@@ -58,12 +49,6 @@ architecture Pll of Demodulator is
 	end component;
 
 	component NCO is
-
-	generic ( 
-		N, 
-		M : positive := 12 
-		 );
-
 	generic (
 		N, -- Questa è il numero di bit in ingresso (addressing space)
 		M -- Questa invece è la larghezza in bit dell'uscita
@@ -172,13 +157,9 @@ end component;
 
 component decimator is
 	generic ( N : positive := 12;
-
-			M : positive := 20
-
 			-- one good sample each M input sample
 			DIV : positive := 200
-
-  			 );
+			);
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
 		  Fin : in signed (N-1 downto 0);         
@@ -188,10 +169,6 @@ end component;
 
 component clock_divider is
 	generic(
-
-		N : positive := 8; 
-		DIV : positive := 200 
-
 		N : positive := 8; -- Number of bits to store the counter
 		DIV : positive := 200
 
@@ -208,12 +185,6 @@ begin
 
 	C1: preamp
 	port map (
-
-		
-		clk => clk, 
-		input => fin,   
-
-		--segnale del component=> segnale interno o esterno
 		clk => clk,
 		input => fin,
 
