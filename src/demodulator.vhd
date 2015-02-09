@@ -14,7 +14,7 @@ end Demodulator;
 
 
 architecture Pll of Demodulator is
-<<<<<<< HEAD
+
   
 	--internal signals
 	signal s1 : signed(N-1 downto 0);
@@ -23,7 +23,7 @@ architecture Pll of Demodulator is
 	
 	--components declaration
   
-=======
+
 
 	--dichiarazione segnali interni
 	signal s1 : signed(N-1 downto 0);
@@ -31,7 +31,7 @@ architecture Pll of Demodulator is
 	signal s3 : signed(N-1 downto 0);
 	--dichiarazione component
 
->>>>>>> FETCH_HEAD
+
 	component phase_detector is
 	generic (
 		N : positive := 12
@@ -58,19 +58,19 @@ architecture Pll of Demodulator is
 	end component;
 
 	component NCO is
-<<<<<<< HEAD
+
 	generic ( 
 		N, 
 		M : positive := 12 
 		 );
-=======
+
 	generic (
 		N, -- Questa è il numero di bit in ingresso (addressing space)
 		M -- Questa invece è la larghezza in bit dell'uscita
 		: positive := 12 -- entrambi sono di default a 12 bit perchè fa
 						 -- fa comodo visto che l'xadc sputa 12 bit
 	);
->>>>>>> FETCH_HEAD
+
 	port (
 		CLK, RST : in std_logic;
 		STEP : in unsigned(N-1 downto 0);
@@ -116,13 +116,13 @@ oscilaltor: NCO
 		E_in => s2,
 		C_OUT => s3
 	);
-<<<<<<< HEAD
+
 	
 	-- also map the output
-=======
+
 
 	-- mappiamo anche l'uscita!
->>>>>>> FETCH_HEAD
+
 	fout <= s2;
 
 end architecture;
@@ -135,11 +135,10 @@ architecture Dpll of Demodulator is
 	signal s2 : std_logic;
 	signal s3 : std_logic;
 	signal s4 : signed(N-1 downto 0);
-<<<<<<< HEAD
+
 	
 	--components declaration
-=======
->>>>>>> FETCH_HEAD
+
 
 component preamp is
 generic (
@@ -173,12 +172,12 @@ end component;
 
 component decimator is
 	generic ( N : positive := 12;
-<<<<<<< HEAD
+
 			M : positive := 20
-=======
+
 			-- one good sample each M input sample
 			DIV : positive := 200
->>>>>>> FETCH_HEAD
+
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
@@ -189,13 +188,13 @@ end component;
 
 component clock_divider is
 	generic(
-<<<<<<< HEAD
+
 		N : positive := 8; 
 		DIV : positive := 200 
-=======
+
 		N : positive := 8; -- Number of bits to store the counter
 		DIV : positive := 200
->>>>>>> FETCH_HEAD
+
 	);
 	port (
 		CLK, RST : in std_logic; 
@@ -209,15 +208,15 @@ begin
 
 	C1: preamp
 	port map (
-<<<<<<< HEAD
+
 		
 		clk => clk, 
 		input => fin,   
-=======
+
 		--segnale del component=> segnale interno o esterno
 		clk => clk,
 		input => fin,
->>>>>>> FETCH_HEAD
+
 		output => s1,
 		rst => rst
 	);
