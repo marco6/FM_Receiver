@@ -1,6 +1,5 @@
 --here the code of loop filter
---in pratica è un filtro passa basso se non ho capito male
---devo solo capire come si fa un filtro passa basso 
+
 
 --used library
 LIBRARY ieee; 
@@ -19,6 +18,30 @@ port (CLK : in std_logic;
 end loop_filter;
 
 architecture Behavioral of loop_filter is
+signal f1 : signed(N-1 downto 0);
+signal f2 : signed(N-1 downto 0);
+signal f3 : signed(N-1 downto 0);
+signal f4 : signed(N-1 downto 0);
+signal sum : signed(N+1 downto 0);  --where I store the result of the addition, it requires 2 additional bit for take care of overflow
 begin
--- da fare 
-end;
+process (CLK,RESET)
+begin
+	if (RESET='1')then
+
+		f1 <= (others => '0');
+		f2 <= (others => '0');
+		f3 <= (others => '0');
+		f4 <= (others => '0');
+		sum <= (others => '0');
+		
+	elsif rising_edge(CLK) then
+		f4 <= f3;
+		f3 <= f2;
+		f2 <= f1;
+		f1 <= filter_in;
+		sum <= f1 + f2 + f3 + f4;
+		filter_out <= sum srl 2; --controllare ancora se si fa così lo shift 
+	end if;
+end process;
+
+end Behavioral ;
