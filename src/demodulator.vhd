@@ -105,9 +105,6 @@ oscilaltor: NCO
 	
 	-- also map the output
 
-
-	-- mappiamo anche l'uscita!
-
 	fout <= s2;
 
 end architecture;
@@ -183,7 +180,7 @@ end component;
 
 begin
 
-	C1: preamp
+amp: preamp
 	port map (
 		clk => clk,
 		input => fin,
@@ -192,7 +189,7 @@ begin
 		rst => rst
 	);
 
-	C2: SyncXor
+demod: SyncXor
 	port map (
 		clk => clk,
 		A => s1,
@@ -200,14 +197,14 @@ begin
 		C => s3
 	);
 
-	C3: clock_divider
+dem_signal: clock_divider
 	port map (
 		clk => clk,
 		rst => rst,
 		O_CLK => s2
 	);
 
-	C4: adder
+integrator: adder
 	port map (
 		CLK => clk,
 		RESET => rst,
@@ -215,7 +212,7 @@ begin
 		F => s4
 	);
 
-	C5: decimator
+sampler: decimator
 	port map (
 		CLK => clk,
 		RESET => rst,

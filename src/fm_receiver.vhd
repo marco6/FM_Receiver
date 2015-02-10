@@ -56,7 +56,7 @@ end architecture;
 configuration CFG of fm_receiver is
 	for structure
 		for dem : demodulator use entity
-			work.demodulator(dpll);
+			work.demodulator(pll);
 		end for;
 	end for;
 end CFG;
