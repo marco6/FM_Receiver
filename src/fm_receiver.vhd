@@ -41,7 +41,7 @@ dem: demodulator
 		clk => clk,
 		rst => rst,
 		fin => fin,
-		fout => s1
+		fout => s1,
 		clkout=> s2
 	);
 

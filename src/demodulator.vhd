@@ -221,7 +221,7 @@ sampler: decimator
 		Fout => fout
 	);
 	
-	clkout<=O_CLK;
+	clkout<=s2;
 	
 end architecture;
 
