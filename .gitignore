@@ -38,3 +38,5 @@ waves/*
 !Makefile
 !.gitignore
 !README.md
+!.doc
+!.docx
