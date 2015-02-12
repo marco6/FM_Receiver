@@ -153,7 +153,7 @@ end component;
 component decimator is
 	generic ( N : positive := 12;
 			-- one good sample each M input sample
-			DIV : positive := 200
+			DIV : positive := 8
 			);
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
@@ -165,7 +165,7 @@ end component;
 component clock_divider is
 	generic(
 		N : positive := 8; -- Number of bits to store the counter
-		DIV : positive := 200
+		DIV : positive := 8
 
 	);
 	port (
