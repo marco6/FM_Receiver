@@ -55,7 +55,7 @@ dut: phase_detector
 	
 	-- Stop resetting after the first clock cycle
 	reset <= '0' after clk_cycle;
-	STOP <= '1' after clk_cycle*1000;
+
 	-- This process generates the clock
 	
 CLOCK_PROCESS:	
@@ -73,7 +73,7 @@ CLOCK_PROCESS:
 	-- on the rising edge everything is set and ready to be processed
 	-- and collected by the check system
 STIMULUS:
-	process (clock)
+	process(clock)
 		--variable ln : line;
 		--variable int_in : integer;
 	begin
@@ -82,10 +82,14 @@ STIMULUS:
 		-- X = sin(50 PI t) + 0.5 sin(2 pi 30000 t)
 		-- with some additional noise (gaussian)
 		-- The format is one value per line
-		if(reset = '0' and clock = '0' and clock'event ) then			
+		if(reset = '0' and rising_edge(clock) ) then			
+			if(x1 /= 0) then
 				--codice test 
-				x1 <= x1 +1 after 200 ns;
-				x2 <= x2 +1 after 200 ns;
+				x1 <= x1 + to_signed(1, N);
+				x2 <= x2 + to_signed(1, N);
+			else
+				STOP <= '1';
+			end if;
 		end if;
 		
 		-- No need for any loop... VHDL will take care!! Handy!
