@@ -1,4 +1,5 @@
 --here the code of loop filter
+--Is implemented as a "filtro a media mobile"
 
 
 --used library
@@ -40,7 +41,7 @@ begin
 		f2 <= f1;
 		f1 <= filter_in;
 		sum <= f1 + f2 + f3 + f4;
-		filter_out <= sum srl 2; --controllare ancora se si fa così lo shift 
+		filter_out <= sum srl 2; --shifting for computing the division by 4 
 	end if;
 end process;
 
