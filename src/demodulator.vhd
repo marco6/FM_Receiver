@@ -8,7 +8,8 @@ entity Demodulator is
 port (
 	clk, rst : in std_logic;
 	fin : in signed( N-1 downto 0);
-	fout : out signed( N-1 downto 0)
+	fout : out signed( N-1 downto 0);
+	clkout : out std_logic
 );
 end Demodulator;
 
@@ -104,7 +105,7 @@ oscilaltor: NCO
 
 	
 	-- also map the output
-
+	clkout<=clk;
 	fout <= s2;
 
 end architecture;
@@ -117,7 +118,7 @@ architecture Dpll of Demodulator is
 	signal s2 : std_logic;
 	signal s3 : std_logic;
 	signal s4 : signed(N-1 downto 0);
-
+	
 	
 	--components declaration
 
@@ -219,6 +220,8 @@ sampler: decimator
 		Fin => s4,
 		Fout => fout
 	);
-
+	
+	clkout<=O_CLK;
+	
 end architecture;
 

@@ -18,7 +18,8 @@ architecture structure of fm_receiver is
 	port (
 		clk, rst : in std_logic;
 		fin : in signed( N-1 downto 0);
-		fout : out signed( N-1 downto 0)
+		fout : out signed( N-1 downto 0);
+		clkout : out std_logic
 	);
 	end component;
 
@@ -32,6 +33,7 @@ architecture structure of fm_receiver is
 	end component;
 
 	signal s1 : signed(N-1 downto 0);
+	signal s2 : std_logic;
 begin
 
 dem: demodulator
@@ -40,11 +42,12 @@ dem: demodulator
 		rst => rst,
 		fin => fin,
 		fout => s1
+		clkout=> s2
 	);
 
 shaper: passabanda
 	port map (
-		clk => clk,
+		clk => s2,
 		rst => rst,
 		X => s1,
 		Y => fout
