@@ -16,14 +16,14 @@ end Demodulator;
 
 architecture Pll of Demodulator is
 
-  
+
 	--internal signals
 	signal s1 : signed(N-1 downto 0);
 	signal s2 : signed(N-1 downto 0);
 	signal s3 : signed(N-1 downto 0);
-	
+
 	--components declaration
-	
+
 	component phase_detector is
 	generic (
 		N : positive := 12
@@ -50,16 +50,14 @@ architecture Pll of Demodulator is
 	end component;
 
 	component NCO is
-	generic (
-		N, -- Questa è il numero di bit in ingresso (addressing space)
-		M -- Questa invece è la larghezza in bit dell'uscita
-		: positive := 12 -- entrambi sono di default a 12 bit perchè fa
-						 -- fa comodo visto che l'xadc sputa 12 bit
-	);
-
+	generic ( N, -- Number of bits as input
+			M -- Number of bits as output
+			: positive := 12; -- Default to 12 bit because of the xadc
+			Shift : natural := 4; -- This is a scaling factor as a shift
+			STEP : natural := 2**9
+			);
 	port (
 		CLK, RST : in std_logic;
-		STEP : in unsigned(N-1 downto 0);
 		E_IN : in signed(N-1 downto 0);
 		C_OUT : out signed(M-1 downto 0)
 	);
@@ -98,12 +96,11 @@ oscilaltor: NCO
 	port map (
 		clk => clk,
 		rst => rst,
-		STEP => to_unsigned(1, N),
 		E_in => s2,
 		C_OUT => s3
 	);
 
-	
+
 	-- also map the output
 	clkout<=clk;
 	fout <= s2;
@@ -111,22 +108,22 @@ oscilaltor: NCO
 end architecture;
 
 architecture Dpll of Demodulator is
-	
+
 	--internal signals
 
 	signal s1 : std_logic;
 	signal s2 : std_logic;
 	signal s3 : std_logic;
 	signal s4 : signed(N-1 downto 0);
-	
-	
+
+
 	--components declaration
 
 
 component preamp is
 generic (
-		N : positive := 12; 
-        soglia_isteresi : positive := 100  
+		N : positive := 12;
+        soglia_isteresi : positive := 100
 	);
 port (
     clk : in std_logic;
@@ -148,7 +145,7 @@ component adder is
   			 );
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
-		  df : in std_logic;         
+		  df : in std_logic;
 		  F : out signed (N-1 downto 0)
 		  );
 end component;
@@ -160,7 +157,7 @@ component decimator is
 			);
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
-		  Fin : in signed (N-1 downto 0);         
+		  Fin : in signed (N-1 downto 0);
 		  Fout: out signed (N-1 downto 0)
 		  );
 end component;
@@ -172,7 +169,7 @@ component clock_divider is
 
 	);
 	port (
-		CLK, RST : in std_logic; 
+		CLK, RST : in std_logic;
 		O_CLK : inout std_logic := '0'
 	);
 end component;
@@ -220,8 +217,8 @@ sampler: decimator
 		Fin => s4,
 		Fout => fout
 	);
-	
+
 	clkout<=s2;
-	
+
 end architecture;
 
