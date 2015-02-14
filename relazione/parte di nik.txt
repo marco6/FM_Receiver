@@ -1,0 +1,16 @@
+(5)Loop Filter:
+
+This component a low pass filter, takes in input a 12 bits signal from the Phase Detector and outputs a 12 bits filtered signal for the NCO.
+Its pourpose is to remove the high frequency components, generated from the operation done by the Phase Detector.
+We decide to implement this component as a Moving Average Filter, it computes the average of N signals, and the value of N depends on what is the value of frequency we want to cut off.
+
+
+                <inserire immagine>      
+
+
+As we can see in this immage, obtained using Matlab as simulator, by computing the average of four signals we obtain a complete rejection of the frequency we want to eliminate.
+
+
+
+
+
