@@ -36,7 +36,7 @@ architecture structure of fm_receiver is
 	signal s2 : std_logic;
 begin
 
-dem: demodulator
+dem: entity work.demodulator(dpll)
 	port map (
 		clk => clk,
 		rst => rst,
@@ -56,10 +56,3 @@ shaper: passabanda
 
 end architecture;
 
-configuration CFG of fm_receiver is
-	for structure
-		for dem : demodulator use entity
-			work.demodulator(pll);
-		end for;
-	end for;
-end CFG;

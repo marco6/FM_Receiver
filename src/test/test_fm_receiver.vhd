@@ -10,6 +10,7 @@ end test_fm_receiver;
 architecture behavior of test_fm_receiver is
 	constant N : positive := 12;
 
+	file source: text open read_mode is "src/test/sawtooth12bit.in";
 	file vectors: text open read_mode is "src/test/sawtooth12bit.dat";
 
 	component fm_receiver is
@@ -27,7 +28,7 @@ architecture behavior of test_fm_receiver is
     -- SIGNAL dmout : std_logic;
     constant clkperiod : time := 1 us;
     signal reset: std_logic := '1'; -- W: Questo è  necessario perchè se no reset è 'undefined'. Probabilmente a te fungeva perchè libero soc ti inizializza le variabili da solo...
-
+	signal original: signed(N-1 downto 0) := (others => '0');
 begin
 
     --anche le funzioni per prendere i valori di volta in volta dal file, e usano la libreria textIO
@@ -54,6 +55,9 @@ test: fm_receiver
 				readline(vectors, vectorline);
 				read(vectorline, fmin_var);
 				fmin <= to_signed(fmin_var, N);
+				readline(source, vectorline);
+				read(vectorline, fmin_var);
+				original <= to_signed(fmin_var, N);
 			end if;
 		end if;
 	end process;
