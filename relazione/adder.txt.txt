@@ -1,6 +1,0 @@
-Adder:
-
-The purpose of this component is to do a Pulse Width Modulation (PWM).
-It take in input the signal come from the XOR and outputs a modulated signal to the Sampler.
-The output is obtained by adding or subtracting a certain quantity based on the sign of the signal come from the XOR. What we obtain is a kind of sine curve.
-  

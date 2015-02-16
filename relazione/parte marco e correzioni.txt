@@ -38,6 +38,11 @@ The filter is a "Direct Form II Transposed" implementation of the standard diffe
  a =    1.0000   -1.9334    0.9355 
  a(1) is 1 because the filter was normalized and his gain is one and this way can be omitted.
  
+Clock Divider
+This component is used to generate a square wave, needed to demodulate the signal. Its simple implementation uses a counter to decide when to switch thus the frequency of the system clock is divided by this factor. It is possible to decide this value at compile time through generics as well as the width of the counter. In order to avoid misbehaviors, a sanity check is introduced to make shure that the width of the counter is high enough to contain the dividing factor.
+
+Xor
+This is simply a xor gate syncronized with the clock.
  
  
 ----------------------------------------------------------------------------------------------
