@@ -1,17 +1,17 @@
 (5)Loop Filter:
 
-This component a low pass filter, takes in input a 12 bits signal from the Phase Detector and outputs a 12 bits filtered signal for the NCO.
-Its pourpose is to remove the high frequency components, generated from the quadrature.
-We decide to implement this component as a Moving Average Filter: it computes the average of N signals, and the value of N depends on what is the value of frequency we want to cut off. In our case N is equal to 4.
+This component is a low pass filter which takes in input a n-bits signal from the Phase Detector and outputs a n-bits filtered signal for the NCO.
+Its purpose is to remove the high frequency components, generated from the quadrature.
+We decided to implement this component as a Moving Average Filter: it computes the average of N signals, and the value of N depends on what is the value of frequency we want to cut off. In our case N is equal to 4.
 
 
                 <inserire immagine>      
 
 
-As we can see in this immage, obtained using Matlab as simulator, by computing the average of four signals we obtain a complete rejection of the carrier frequency. The graph clearly shows that in order to obtain a rejection of at least -20 dB, deviation should be less than 5.5 kHz.
+As we can see in this image, obtained using Matlab as a simulator, by computing the average of four signals we obtain a complete rejection of the carrier frequency. The graph clearly shows that in order to obtain a rejection of at least -20 dB, deviation should be less than 5.5 kHz.
 
 Adder:
 
 The purpose of this component is to demodulate a Pulse Width Modulated (PWM) signal.
-It take in input the signal come from the XOR and outputs a demodulated signal to the Sampler.
-The output is obtained by adding or subtracting a certain quantity based on the sign of the signal come from the XOR (i.e. integrating the signal). 
+As input, it takes the signal coming from the XOR and outputs a demodulated signal to the sampler.
+The output is obtained by adding or subtracting a certain quantity based on the sign of the signal coming from the XOR (i.e. integrating the signal). 
