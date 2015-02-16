@@ -9,7 +9,7 @@ entity NCO is
 generic ( N, -- Number of bits as input
 		M -- Number of bits as output
 		: positive := 12; -- Default to 12 bit because of the xadc
-		Shift : natural := 4; -- This is a scaling factor as a shift
+		Shift : natural := 7; -- This is a scaling factor as a shift
 		STEP : natural := 2**9
 		);
 port (

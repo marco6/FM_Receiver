@@ -20,7 +20,7 @@ entity adder is
 end adder;
 
 architecture adder_behavior of adder is 
-constant inc_signal : signed (N-1 downto 0) := to_signed(17, N);  --signal which will be incremented 
+	constant inc_signal : signed (N-1 downto 0) := to_signed(1, N);  --signal which will be incremented 
 	 signal f2 : signed(N-1 downto 0); --accumulator
 begin
 	process (CLK , RESET) 

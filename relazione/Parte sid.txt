@@ -1,0 +1,17 @@
+Phase Detector
+
+The phase detector needs to compute the phase difference of its two input signals, in this case Fin and Cout, that is the output of NCO. It is based on following trigonometric formula, so it implement a multiplicaion (with a successive and appropriate rounding).
+
+Let α be the phase of the first input and β be the phase of the second.
+
+*inserire immagine con la formula qui*
+
+The first term provides the desired phase difference as a voltage scaled by a factor 2. The second term is a sinusoid at twice the reference frequency, so it can be filtered out by following L)oop Filter.
+
+Sampler (ho un sacco di dubbi sul suo funzionamento)
+
+It is a circuit that take one sample every N input samples. In this case is used as digital low-pass filter
+in order to get a more linear interpolation between the samples and reduce the sampling rate, otherwise the output of the adder would have too many swings (due to its steps).
+The input is the output of Adder an the output is mapped on the input of the external low-pass filter.
+
+

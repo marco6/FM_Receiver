@@ -14,6 +14,103 @@ port (
 end Demodulator;
 
 
+<<<<<<< Updated upstream
+=======
+architecture Pll of Demodulator is
+
+
+	--internal signals
+	signal s1 : signed(N-1 downto 0);
+	signal s2 : signed(N-1 downto 0);
+	signal s3 : signed(N-1 downto 0);
+
+	--components declaration
+
+	component phase_detector is
+	generic (
+		N : positive := 12
+  	);
+	port (
+		clk    : in std_logic ;
+		reset  : in std_logic ;
+		input1 : in signed (n-1 downto 0);
+		input2 : in signed (n-1 downto 0);
+		output : out signed (n-1 downto 0)
+	);
+	end component;
+
+	component loop_filter is
+	generic (
+		N: positive := 12
+	);
+	port (
+		CLK : in std_logic;
+		RESET : in std_logic;
+		filter_in : in signed (N-1 downto 0);
+		filter_out : out signed (N-1 downto 0)
+	);
+	end component;
+
+	component NCO is
+	generic ( N, -- Number of bits as input
+			M -- Number of bits as output
+			: positive := 12; -- Default to 12 bit because of the xadc
+			Shift : natural := 4; -- This is a scaling factor as a shift
+			STEP : natural := 2**9
+			);
+	port (
+		CLK, RST : in std_logic;
+		E_IN : in signed(N-1 downto 0);
+		C_OUT : out signed(M-1 downto 0)
+	);
+	end component;
+
+begin
+	--port maps
+phd: phase_detector
+	generic map (
+		N => N
+	)
+	port map (
+		clk => clk,
+		reset  => rst,
+		input1 => fin,
+		input2 => s3,
+		output => s1
+    );
+
+filter: loop_filter
+	generic map (
+		N => N
+	)
+	port map(
+		CLK => clk,
+		RESET => rst,
+		filter_in => s1,
+		filter_out => s2
+	);
+
+oscilaltor: NCO
+	generic map (
+		N => N,
+		M => N,
+		Shift => 7
+	)
+	port map (
+		clk => clk,
+		rst => rst,
+		E_in => s2,
+		C_OUT => s3
+	);
+
+
+	-- also map the output
+	clkout<=clk;
+	fout <= s2;
+
+end architecture;
+
+>>>>>>> Stashed changes
 architecture Dpll of Demodulator is
 
 	--internal signals

@@ -26,7 +26,7 @@ architecture behavior of test_passabanda is
     --i nomi dei segnali sono copiati pari pari dal testbench del pdf
     SIGNAL clk : std_logic := '0' ;
     SIGNAL fmin : signed(N-1 downto 0) := (others => '0');
-    constant clkperiod : time := 10 ns;
+	constant clkperiod : time := 10 ns;
     signal reset: std_logic := '1'; -- W: Questo è  necessario perchè se no reset è 'undefined'. Probabilmente a te fungeva perchè libero soc ti inizializza le variabili da solo...
 
 	begin
