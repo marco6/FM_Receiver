@@ -1,0 +1,3 @@
+we decided to use a filter of the third order as we noticed that filters of higher order does not affect much on the accuracy, but introduce a considerable delay in the output.
+
+non so come si scriva "si è deciso" quindi ho usato we se tu sai come si scrive correggi pure
