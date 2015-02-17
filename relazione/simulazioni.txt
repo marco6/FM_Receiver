@@ -1,11 +1,11 @@
 To simulate the entities we uses GHDL because of its conformance to IEEE standards and its speed while to view the generated waveforms we used GTKWave.
 We tried just two waveforms as testbench: a 800Hz sine wave and a 800Hz sawtooth wave modulated with a carrier frequency of 125 kHz and a deviation of 5.5 kHz.
-<immagine seno pll>
 <immagine sega pll>
+<immagine seno pll>
 
-While the classic PLL showed great performance on both waves, the DPLL overflowed in both tests because of the too high deviation and too low sampling frequency. This problem appens because of the lack of sincronizzation between reference and input.
+While the classic PLL showed great performance on both waves, the DPLL overflowed in both tests because of the too high deviation and too low sampling frequency. This problem also appens because of the lack of sincronizzation between reference and input.
 <immagine seno overflow dpll>
-
+<immagine dettaglio overflow>
 However, even the DPLL can perform good at lower frequencyes: choosing 50kHz as carrier frequency and 400 Hz as deviation, the signal is easily followed. 
 
 <immagine seno dpll>

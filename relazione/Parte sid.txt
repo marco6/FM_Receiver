@@ -10,8 +10,7 @@ The first term provides the desired phase difference as a voltage scaled by a fa
 
 Sampler (ho un sacco di dubbi sul suo funzionamento)
 
-It is a circuit that take one sample every N input samples. In this case is used as digital low-pass filter
-in order to get a more linear interpolation between the samples and reduce the sampling rate, otherwise the output of the adder would have too many swings (due to its steps).
-The input is the output of Adder an the output is mapped on the input of the external low-pass filter.
+It is a circuit that take one sample every N input samples. In this case is used to get rid of the intermediate steps of the integration obtaining a more linear interpolation between the samples and reduceing the sampling rate: otherwise the output of the adder would have too many swings.
+The input is the output of Adder and the output is mapped on the input of the external low-pass filter.
 
 
