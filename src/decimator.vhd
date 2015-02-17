@@ -21,24 +21,24 @@ entity decimator is
 end decimator;
 
 architecture decimator_behavior of decimator is
-	signal cnt : unsigned(N-1 downto 0); --counter
-	signal f : signed(N-1 downto 0); --output
 begin
 	process (CLK , RESET)
+		variable cnt : unsigned(N-1 downto 0); --counter
+		variable f : signed(N-1 downto 0); --output
 	begin
 		if (RESET = '1') then
-			f <= (others => '0');
-			cnt <= (others => '0');
+			f := (others => '0');
+			cnt := (others => '0');
 		elsif rising_edge (CLK) then
 			if (cnt /= DIV-1) then
-				cnt <= cnt + to_unsigned(1, N); -- seems expensive, but in VHDL
+				cnt := cnt + to_unsigned(1, N); -- seems expensive, but in VHDL
 												-- functions are solved to constants,
 												-- so... everything seems fine!
 			else
 				-- Hard reset
-				cnt <= (others => '0');
+				cnt := (others => '0');
 				-- And the output will be the input sample
-				f <= Fin;
+				f := Fin;
 			end if;
 		end if;
 		Fout<=f;

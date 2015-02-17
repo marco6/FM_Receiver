@@ -26,12 +26,12 @@ y = fmmod(x, Fc, Fs, dev);
 
 % Amplificazione con clipping
 y = y > 0;
+plot(t, double(y)); figure
 
 % segnale demodulazione e risultato
-z = (square(2 * pi * Fc * t) + 1) / 2;
+z = (square(2 * pi * Fc * t + pi/4) + 1) / 2;
 
 z = z ~= y;
-	
 z = cumsum(z - 0.5);
 %z = z/max(z);
 

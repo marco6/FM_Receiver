@@ -35,7 +35,16 @@ architecture behavior of test_fm_receiver is
 		fout : out signed( N-1 downto 0)
 	);
 	end component;
-
+	
+	component passabanda is
+	generic ( N : positive := 12 );
+	port (
+		CLK, RST : in std_logic;
+		X : in signed( N-1 downto 0);
+		Y : out signed( N-1 downto 0)
+	);
+	end component;
+	
     --i nomi dei segnali sono copiati pari pari dal testbench del pdf
     SIGNAL clk : std_logic := '0' ;
     SIGNAL fmin : signed(N-1 downto 0) := (others => '0');
@@ -43,7 +52,7 @@ architecture behavior of test_fm_receiver is
     -- SIGNAL dmout : std_logic;
     constant clkperiod : time := 1 us;
     signal reset: std_logic := '1'; -- W: Questo è  necessario perchè se no reset è 'undefined'. Probabilmente a te fungeva perchè libero soc ti inizializza le variabili da solo...
-	signal original: signed(N-1 downto 0) := (others => '0');
+	signal original, filtered: signed(N-1 downto 0) := (others => '0');
 begin
 
 check: passabanda
@@ -62,6 +71,13 @@ test: fm_receiver
 		fin=> fmin, -- W: Questo non è necessario assegnarlo... Il simulatore lo vede lo stesso
 		fout=>open
 	);
+
+filter: passabanda
+	port map(
+		clk => clk,
+		rst => reset,
+		x => original,
+		y => filtered);
 
 	-- W: Reset gen can be much more easily done with
 	RESET <= '0' after clkperiod*4;

@@ -5,7 +5,7 @@ use IEEE.numeric_std.all;
 entity clock_divider is
 	generic(
 		N : positive := 8; -- Number of bits to store the counter
-		DIV : positive := 200 
+		DIV : positive := 20 
 	);
 	port (
 		CLK, RST : in std_logic; -- Clock and Reset needed

@@ -20,24 +20,22 @@ entity adder is
 end adder;
 
 architecture adder_behavior of adder is 
-	constant inc_signal : signed (N-1 downto 0) := to_signed(1, N);  --signal which will be incremented 
-	 signal f2 : signed(N-1 downto 0); --accumulator
+	constant inc_signal : signed (N-1 downto 0) := to_signed(93, N);  --signal which will be incremented 
+	signal f2 : signed(N-1 downto 0) := (others => '0'); --accumulator
 begin
 	process (CLK , RESET) 
 	begin
-		if (RESET = '1') then 
-			F <= (others => '0');
+		if rising_edge(RESET) then 
 			f2<= (others => '0');
 		elsif rising_edge (CLK) then	
 			if (df = '1') then
-				--F <= F + inc_signal;
 				f2<= f2  + inc_signal;
-			else 
-				f2 <= f2  - inc_signal ; 
+			else
+				f2<= f2 - inc_signal;
 			end if;
-			F<=f2;
 		end if;
 	end process;
+	F<=f2;
 
 end adder_behavior;
 

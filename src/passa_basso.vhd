@@ -37,18 +37,9 @@ architecture AsyncReset_Beh of passabanda is
 	constant b2l : signed(N-1 downto 0) := to_signed(integer(0.001074339549624 * Np2), N);
 	constant b3l : signed(N-1 downto 0) := to_signed(integer(0.000537169774812 * Np2), N);
 
-
-	--constant a1h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
-	--constant a2h : signed(N-1 downto 0) := to_signed(integer((0.9999) * Np2), N);
-
-	--constant b1h : signed(N-1 downto 0) := to_signed(integer(0.9999 * Np2), N);
-	--constant b2h : signed(N-1 downto 0) := to_signed(integer((-1.9999) * Np2), N);
-	--constant b3h : signed(N-1 downto 0) := to_signed(integer(0.9999*Np2), N);
-
-
 	-- temporary variable
-	signal x1, x2, x3, y1, y_retr: signed(N-1 downto 0) := (others => '0');
-
+	signal x1, x2, y1, y_retr: signed(N-1 downto 0) := (others => '0');
+	constant round : signed ( 2*N+1 downto 0) := to_signed(2**(N-1), 2*(N+1));
 begin
 	process (CLK, RST)
 		variable direct : signed (2*N-1 downto 0);
@@ -62,7 +53,6 @@ begin
 			-- On reset everything should go to zero
 			x1 <= (others => '0');
 			x2 <= (others => '0');
-			x3 <= (others => '0');
 			y1 <= (others => '0');
 			y_retr <=(others => '0');
 			Y <= (others => '0');
@@ -77,7 +67,8 @@ begin
 
 			recursive := y_retr * a1l + y1 * a2l;
 
-			sum := direct - recursive;
+			sum := direct - recursive + round;
+
 
 			-- take new value
 			y1 <= y_retr;

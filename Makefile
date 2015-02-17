@@ -27,7 +27,7 @@ test/%: src/test/%.vhd
 run/%: test/%
 	@echo "Running $* testcase..."
 	ghdl --elab-run $(GHDL_FLAGS) --workdir=build $* --vcd="waves/$*.vcd"
-	gtkwave "waves/$*.vcd" &
+#	gtkwave "waves/$*.vcd" &
 
 # running depends on all tests by calling a run rule each
 run:  $(addprefix run/, $(notdir $(TEST)))

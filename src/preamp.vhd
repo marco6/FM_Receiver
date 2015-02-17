@@ -6,7 +6,7 @@ USE ieee.numeric_std.ALL;
 entity preamp is
 generic (
 		N : positive := 12; --output from xadc of 12 bit
-        soglia_isteresi : positive := 100  --hysteresis to eliminate noise
+        soglia_isteresi : positive := 1  --hysteresis to eliminate noise
 	);
 port (
     clk : in std_logic;   --general system clock

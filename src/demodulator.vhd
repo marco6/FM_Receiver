@@ -157,7 +157,7 @@ end component;
 component decimator is
 	generic ( N : positive := 12;
 			-- one good sample each M input sample
-			DIV : positive := 8
+			DIV : positive := 20
 			);
 	port (CLK : in std_logic;
 		  RESET : in std_logic;
@@ -169,7 +169,7 @@ end component;
 component clock_divider is
 	generic(
 		N : positive := 8; -- Number of bits to store the counter
-		DIV : positive := 8
+		DIV : positive := 20
 
 	);
 	port (
@@ -200,6 +200,9 @@ demod: SyncXor
 	);
 
 dem_signal: clock_divider
+	generic map (
+		DIV => 8
+	)
 	port map (
 		clk => clk,
 		rst => rst,
@@ -209,12 +212,15 @@ dem_signal: clock_divider
 integrator: adder
 	port map (
 		CLK => clk,
-		RESET => rst,
-		df => s1,
+		RESET => s2,
+		df => s3,
 		F => s4
 	);
 
 sampler: decimator
+	generic map (
+		DIV => 8
+	)
 	port map (
 		CLK => clk,
 		RESET => rst,
