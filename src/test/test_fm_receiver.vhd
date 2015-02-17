@@ -9,23 +9,9 @@ end test_fm_receiver;
 
 architecture behavior of test_fm_receiver is
 	constant N : positive := 12;
-<<<<<<< Updated upstream
 
 	file source: text open read_mode is "src/test/sawtooth12bit.in";
-=======
-	
->>>>>>> Stashed changes
 	file vectors: text open read_mode is "src/test/sawtooth12bit.dat";
-	file origin: text open read_mode is "src/test/sawtooth12bit.in";
-
-	component passabanda is
-	generic ( N : positive := 12 );
-	port (
-		CLK, RST : in std_logic;
-		X : in signed( N-1 downto 0);
-		Y : out signed( N-1 downto 0)
-	);
-	end component;
 
 	component fm_receiver is
 	generic ( N : positive := 12 );
@@ -94,15 +80,9 @@ filter: passabanda
 				readline(vectors, vectorline);
 				read(vectorline, fmin_var);
 				fmin <= to_signed(fmin_var, N);
-<<<<<<< Updated upstream
 				readline(source, vectorline);
 				read(vectorline, fmin_var);
 				original <= to_signed(fmin_var, N);
-=======
-				readline(origin, vectorline);
-				read(vectorline, fmin_var);
-				o_in <= to_signed(fmin_var, N);
->>>>>>> Stashed changes
 			end if;
 		end if;
 	end process;

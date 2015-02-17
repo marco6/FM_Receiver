@@ -42,11 +42,7 @@ begin
 		f1 := filter_in;
 		sum := f1(f1'left) & f1(f1'left) & f1 + f2 + f3 + f4;
 	end if;
-<<<<<<< Updated upstream
 	filter_out <= sum(N+1 downto 2); --shifting for computing the division by 4 
-=======
-	filter_out <= sum(N downto 1); --shifting for computing the division by 4 
->>>>>>> Stashed changes
 end process;
 
 end Behavioral ;
